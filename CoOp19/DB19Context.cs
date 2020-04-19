@@ -28,7 +28,7 @@ namespace CoOp19.Dtb
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Server=tcp:db-19.database.windows.net,1433;Initial Catalog=DB-19;Persist Security Info=False;User ID=addmin;Password=Password123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
+                optionsBuilder.UseSqlServer(StringData.ConnectionString);
             }
         }
 
