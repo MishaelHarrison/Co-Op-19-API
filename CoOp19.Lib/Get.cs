@@ -8,7 +8,7 @@ namespace CoOp19.Lib
 {
     public class Get
     {
-        public async Task<IEnumerable<ConsumableViewResource>> Consumables()
+        public static async Task<IEnumerable<ConsumableViewResource>> Consumables()
         {
             var output = new List<ConsumableViewResource>();
             foreach (var item in await Output.GetConsumables())
@@ -20,7 +20,7 @@ namespace CoOp19.Lib
             return output;
         }
 
-        public async Task<IEnumerable<HealthViewResource>> HealthResources()
+        public static async Task<IEnumerable<HealthViewResource>> HealthResources()
         {
             var output = new List<HealthViewResource>();
             foreach (var item in await Output.GetHealthResources())
@@ -32,7 +32,7 @@ namespace CoOp19.Lib
             return output;
         }
 
-        public async Task<IEnumerable<GenericViewResource>> Generics()
+        public static async Task<IEnumerable<GenericViewResource>> Generics()
         {
             var output = new List<GenericViewResource>();
             foreach (var item in await Output.GetGenerics())
@@ -43,7 +43,7 @@ namespace CoOp19.Lib
             return output;
         }
 
-        public async Task<IEnumerable<HealthViewResourceService>> HealthServices()
+        public static async Task<IEnumerable<HealthViewResourceService>> HealthServices()
         {
             var output = new List<HealthViewResourceService>();
             foreach (var item in await Output.GetHealthServices())
@@ -56,7 +56,7 @@ namespace CoOp19.Lib
             return output;
         }
 
-        public async Task<IEnumerable<ViewMapData>> MapData()
+        public static async Task<IEnumerable<ViewMapData>> MapData()
         {
             var output = new List<ViewMapData>();
             foreach (var item in await Output.GetMapData())
@@ -66,7 +66,7 @@ namespace CoOp19.Lib
             return output;
         }
 
-        public async Task<IEnumerable<ShelterViewResource>> Shelters()
+        public static async Task<IEnumerable<ShelterViewResource>> Shelters()
         {
             var output = new List<ShelterViewResource>();
             foreach (var item in await Output.GetShelters())
@@ -78,7 +78,7 @@ namespace CoOp19.Lib
             return output;
         }
 
-        public async Task<IEnumerable<UsersView>> Users()
+        public static async Task<IEnumerable<UsersView>> Users()
         {
             var output = new List<UsersView>();
             foreach (var item in await Output.GetUsers())

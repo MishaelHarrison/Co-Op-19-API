@@ -1,7 +1,5 @@
-using System;
 using CoOp19.Dtb.Entities;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace CoOp19.Dtb
 {

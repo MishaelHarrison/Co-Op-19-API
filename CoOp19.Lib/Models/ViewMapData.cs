@@ -7,18 +7,30 @@ namespace CoOp19.Lib.Models
         public ViewMapData(MapData map)
         {
             ID = map.Id;
-            gpsn = map.Gpsn;
-            gpsw = map.Gpsw;
-            address = map.Address;
-            city = map.City;
-            state = map.State;
+            Gpsn = map.Gpsn;
+            Gpsw = map.Gpsw;
+            Address = map.Address;
+            City = map.City;
+            State = map.State;
+        }
+
+        public MapData ToData()
+        {
+            return new MapData
+            {
+                Gpsn = this.Gpsn,
+                Gpsw = this.Gpsw,
+                City = this.City,
+                Address = this.Address,
+                State = this.State
+            };
         }
             
         public int ID { get; set; }
-        public decimal? gpsn { get; set; }
-        public decimal? gpsw { get; set; }
-        public string address { get; set; }
-        public string city { get; set; }
-        public string state { get; set; }
+        public decimal? Gpsn { get; set; }
+        public decimal? Gpsw { get; set; }
+        public string Address { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
     }
 }
