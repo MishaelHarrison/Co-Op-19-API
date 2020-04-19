@@ -36,6 +36,8 @@ namespace CoOp19.App
                                   });
             });
 
+            CoOp19.Dtb.StringData.ConnectionString = Configuration.GetConnectionString("Access");
+
             StringData.ConnectionString = "";
 
             services.AddDbContext<DB19Context>(options =>
