@@ -19,16 +19,16 @@ namespace CoOp19.App.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ConsumableViewResource>> GetActionAsync(int id)
         {
-            //return Ok(await Get.)
-            return Ok();
+            return Ok(await Get.Consumable(id));
         }
 
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(ConsumableViewResource))]
         [ProducesResponseType(400)]
-        public async Task Post([FromBody] ConsumableViewResource consume)
+        public async Task<ActionResult<ConsumableViewResource>> Post([FromBody] ConsumableViewResource consume)
         {
             await Lib.Post.AddConsumable(consume);
+            return consume;
         }
     }
 }

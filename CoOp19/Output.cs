@@ -36,21 +36,20 @@ namespace CoOp19.Dtb
 
         //Output all of a foreign key////////////////////////////////////////////////////////////////////////////////////////
 
-        static private async Task<IEnumerable<T>> Get<T>(Func<DB19Context, DbSet<T>> Item, Func<T,bool> Aplies) where T: class
+        static private async Task<List<T>> Get<T>(Func<DB19Context, DbSet<T>> Item, Func<T,bool> Aplies) where T: class
         {
             using (var context = new DB19Context())
             {
-                var output = from item in Item(context)
-                             where Aplies(item)
-                             select item;
-                
-                return await output.ToListAsync();
+                return new List<T>(
+                     from item in await Item(context).ToListAsync()
+                     where Aplies(item)
+                     select item);
             }
         }
 
-        static public async Task<IEnumerable<ConsumableResource>> GetRelatedConsumableResource(int id) =>
+        static public async Task<List<ConsumableResource>> GetRelatedConsumableResource(int id) =>
             await Get((db => db.ConsumableResource), (item => item.ResourceId == id));
-        static public async Task<IEnumerable<HealthResourceServices>> GetRelatedHealthResourceServices(int id) =>
+        static public async Task<List<HealthResourceServices>> GetRelatedHealthResourceServices(int id) =>
             await Get((db => db.HealthResourceServices), (item => item.RecourceId == id));
 
         //Output a single item/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -69,13 +68,13 @@ namespace CoOp19.Dtb
             await Get((db => db.GenericResource), id);
         static public async Task<HealthResource> GetHealthResource(int id) =>
             await Get((db => db.HealthResource), id);
-        static public async Task<HealthResourceServices> GetHealthResourceServices(int id) =>
+        static public async Task<HealthResourceServices> GetHealthResourceService(int id) =>
             await Get((db => db.HealthResourceServices), id);
         static public async Task<MapData> GetMapData(int id) =>
             await Get((db => db.MapData), id);
         static public async Task<ShelterResource> GetShelterResource(int id) =>
             await Get((db => db.ShelterResource), id);
-        static public async Task<Users> GetUsers(int id) =>
+        static public async Task<Users> GetUser(int id) =>
             await Get((db => db.Users), id);
     }
 }

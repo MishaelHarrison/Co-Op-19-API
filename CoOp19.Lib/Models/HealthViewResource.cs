@@ -56,6 +56,6 @@ namespace CoOp19.Lib.Models
         public string State { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
-        public List<Dtb.Entities.HealthResourceServices> Services { get; set; }
+        public List<HealthResourceServices> Services { get; set; }
     }
 }

@@ -20,22 +20,16 @@ namespace CoOp19.App.Controllers
         [HttpGet("{ID}")]
         public async Task<ShelterViewResource> GetOneActionAsync(int id)
         {
-            using (var context = new DB19Context())
-            {
-                var shelt = await context.ShelterResource.FindAsync(id);
-                var gen = await context.GenericResource.FindAsync(shelt.ResourceId);
-                var map = await context.MapData.FindAsync(gen.LocId);
-                return new ShelterViewResource(map, shelt, gen);
-            }
+            return await Get.Shelter(id);
         }
 
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(ShelterViewResource))]
         [ProducesResponseType(400)]
-        public async Task<ActionResult> PostAsync([FromBody] ShelterViewResource shelt)
+        public async Task<ActionResult<ShelterViewResource>> PostAsync([FromBody] ShelterViewResource shelt)
         {
             await Post.AddShelterResource(shelt);
-            return Ok();
+            return Ok(shelt);
         }
     }
 }

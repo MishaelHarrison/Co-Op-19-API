@@ -21,24 +21,16 @@ namespace CoOp19.App.Controllers
         [HttpGet("{ID}")]
         public async Task<UsersView> GetUserAsync(int id)
         {
-            using (var context = new DB19Context())
-            {
-                var user = await context.Users.FindAsync(id);
-                using (var context2 = new DB19Context())
-                {
-                    var map = await context2.MapData.FindAsync(user.Loc);
-                    return new UsersView(map, user);
-                }
-            }
+            return await Get.User(id);
         }
 
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(UsersView))]
         [ProducesResponseType(400)]
-        public async Task<ActionResult> PostAsync([FromBody] UsersView User)
+        public async Task<ActionResult<UsersView>> PostAsync([FromBody] UsersView User)
         {
             await Post.AddUser(User);
-            return Ok();
+            return Ok(User);
         }
     }
 }

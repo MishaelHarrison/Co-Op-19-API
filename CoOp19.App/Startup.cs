@@ -38,8 +38,6 @@ namespace CoOp19.App
 
             CoOp19.Dtb.StringData.ConnectionString = Configuration.GetConnectionString("Access");
 
-            StringData.ConnectionString = "";
-
             services.AddDbContext<DB19Context>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DB19Context")));
             services.AddControllers();

@@ -3,7 +3,7 @@ using CoOp19.Dtb.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-
+using System.Threading.Tasks;
 
 namespace CoOp19.App.Controllers
 {
@@ -12,19 +12,15 @@ namespace CoOp19.App.Controllers
     public class MainController : ControllerBase
     {
         [HttpGet]
-        public ActionResult<IEnumerable<MapData>> Get()
+        public async Task<ActionResult<IEnumerable<MapData>>> Get()
         {
-            return Ok(Lib.Get.MapData());
+            return Ok(await Lib.Get.MapData());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<IEnumerable<MapData>> Get(int id)
+        public async Task<ActionResult<IEnumerable<MapData>>> Get(int id)
         {
-            var output = new List<MapData>();
-            using (var context = new DB19Context())
-            {
-                return Ok(context.MapData.Find(id));
-            }
+            return Ok(await Lib.Get.MapData(id));
         }
 
     }

@@ -88,6 +88,63 @@ namespace CoOp19.Lib
             }
             return output;
         }
+        public static async Task<ConsumableViewResource> Consumable(int id)
+        {
+            var item = await Output.GetConsumableResource(id);
+            var gen = await Output.GetGenericResource(item.ResourceId);
+            var map = await Output.GetMapData(gen.LocId ?? default);
+            return new ConsumableViewResource(map, gen, item);
+        }
+
+        public static async Task<HealthViewResource> HealthResource(int id)
+        {
+            var item = await Output.GetHealthResource(id);
+            var gen = await Output.GetGenericResource(item.ResourceId);
+            var map = await Output.GetMapData(gen.LocId ?? default);
+            return new HealthViewResource(item, gen, map)
+            {
+                Services = await Output.GetRelatedHealthResourceServices(id)
+            };
+        }
+
+        public static async Task<GenericViewResource> Generic(int id)
+        {
+            var item = await Output.GetGenericResource(id);
+            var map = await Output.GetMapData(item.LocId ?? default);
+            return new GenericViewResource(map, item)
+            {
+                ConsumableResources = await Output.GetRelatedConsumableResource(id)
+            };
+        }
+
+        public static async Task<HealthViewResourceService> HealthService(int id)
+        {
+            var item = await Output.GetHealthResourceService(id);
+            var health = await Output.GetHealthResource(item.RecourceId);
+            var gen = await Output.GetGenericResource(health.ResourceId);
+            var map = await Output.GetMapData(gen.LocId ?? default);
+            return new HealthViewResourceService(item, health, gen, map);
+        }
+
+        public static async Task<ViewMapData> MapData(int id)
+        {
+            return new ViewMapData(await Output.GetMapData(id));
+        }
+
+        public static async Task<ShelterViewResource> Shelter(int id)
+        {
+            var item = await Output.GetShelterResource(id);
+            var gen = await Output.GetGenericResource(item.ResourceId);
+            var map = await Output.GetMapData(gen.LocId ?? default);
+            return new ShelterViewResource(map, item, gen);
+        }
+
+        public static async Task<UsersView> User(int id)
+        {
+            var item = await Output.GetUser(id);
+            var map = await Output.GetMapData(item.Loc ?? default);
+            return new UsersView(map, item);
+        }
 
     }
 }

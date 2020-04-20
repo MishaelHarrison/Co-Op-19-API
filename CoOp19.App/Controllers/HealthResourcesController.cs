@@ -17,44 +17,20 @@ namespace CoOp19.App.Controllers
         {
             return await Get.HealthResources();
         }
-
-        public List<HealthResourceServices> GetServices(int id)
-        {
-            using (var context = new DB19Context())
-            {
-                var output = new List<HealthResourceServices>();
-                foreach (var item in context.HealthResourceServices)
-                {
-                    if (item.RecourceId == id)
-                    {
-                        output.Add(item);
-                    }
-                }
-                return output;
-            }
-        }
-
+        
         [HttpGet("{ID}")]
         public async Task<HealthViewResource> GetHealthResource(int id)
         {
-            using (var context = new DB19Context())
-            {
-                var health = await context.HealthResource.FindAsync(id);
-                var gen = await context.GenericResource.FindAsync(health.ResourceId);
-                var map = await context.MapData.FindAsync(gen.LocId);
-                var output = new HealthViewResource(health, gen, map);
-                output.Services = GetServices(id);
-                return output;
-            }
+            return await Get.HealthResource(id);
         }
 
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(HealthViewResource))]
         [ProducesResponseType(400)]
-        public async Task<ActionResult> PostAsync([FromBody] HealthViewResource health)
+        public async Task<ActionResult<HealthViewResource>> PostAsync([FromBody] HealthViewResource health)
         {
             await Post.AddHealthResource(health);
-            return Ok();
+            return Ok(health);
         }
     }
 }
