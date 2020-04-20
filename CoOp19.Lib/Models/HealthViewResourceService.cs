@@ -30,33 +30,13 @@ namespace CoOp19.Lib.Models
 
         public HealthResourceServices ToData()
         {
-            var map = new MapData
-            {
-                Gpsn = this.Gpsn,
-                Gpsw = this.Gpsw,
-                City = this.City,
-                Address = this.Address,
-                State = this.State
-            };
-            var gen = new GenericResource
-            {
-                Name = this.Name,
-                Description = this.Description,
-                Loc = map
-            };
-            var health = new HealthResource
-            {
-                ProvidesTests = this.ProvidesTests,
-                TestPrice = this.TestPrice,
-                Resource = gen
-            };
             return new HealthResourceServices
             {
                 ServiceDesc = this.ServiceDesc,
                 ServiceName = this.ServiceName,
                 AvgWaitHours = this.AvgWaitHours,
                 EstCost = this.EstCost ?? default,
-                Recource = health
+                RecourceId = this.ResourceId
             };
         }
 

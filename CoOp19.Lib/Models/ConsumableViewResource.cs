@@ -23,26 +23,12 @@ namespace CoOp19.Lib.Models
 
         public ConsumableResource ToData()
         {
-            var map = new MapData
-            {
-                Gpsn = this.Gpsn,
-                Gpsw = this.Gpsw,
-                City = this.City,
-                Address = this.Address,
-                State = this.State
-            };
-            var gen = new GenericResource
-            {
-                Name = this.Name,
-                Description = this.Description,
-                Loc = map
-            };
             return new ConsumableResource
             {
                 Price = this.Price,
                 Quantity = this.Quantity,
                 RecName = this.RecName,
-                Resource = gen
+                ResourceId = this.ResourceId
             };
         }
 
