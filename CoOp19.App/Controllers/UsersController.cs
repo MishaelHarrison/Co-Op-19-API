@@ -30,7 +30,7 @@ namespace CoOp19.App.Controllers
         public async Task<ActionResult<UsersView>> PostAsync([FromBody] UsersView User)
         {
             await Post.AddUser(User);
-            return Ok(User);
+            return User;
         }
     }
 }
