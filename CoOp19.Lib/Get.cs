@@ -180,28 +180,70 @@ namespace CoOp19.Lib
         public static async Task<IEnumerable<ShelterViewResource>> Shelters(decimal n, decimal w, decimal r) =>
             Filter(await Shelters(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
 
+        /// <summary>
+        /// retrieves all user resources within a geographical circle
+        /// </summary>
+        /// <param name="n">GPS North</param>
+        /// <param name="w">GPS W</param>
+        /// <param name="r"></param>
+        /// <returns></returns>
         public static async Task<IEnumerable<UsersView>> Users(decimal n, decimal w, decimal r) =>
             Filter(await Users(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
 
 
+        /// <summary>
+        /// retrieves a list of consumable resources given a constraint
+        /// </summary>
+        /// <param name="filter">boolean function defineing constraint</param>
+        /// <returns>list of resources</returns>
         public static async Task<IEnumerable<ConsumableViewResource>> Consumables(Func<ConsumableViewResource, bool> filter) =>
             Filter(await Consumables(), filter);
 
+        /// <summary>
+        /// retrieves a list of Health resources given a constraint
+        /// </summary>
+        /// <param name="filter">boolean function defineing constraint</param>
+        /// <returns>list of resources</returns>
         public static async Task<IEnumerable<HealthViewResource>> HealthResources(Func<HealthViewResource, bool> filter) =>
             Filter(await HealthResources(), filter);
 
+        /// <summary>
+        /// retrieves a list of generic resources given a constraint
+        /// </summary>
+        /// <param name="filter">boolean function defineing constraint</param>
+        /// <returns>list of resources</returns>
         public static async Task<IEnumerable<GenericViewResource>> Generics(Func<GenericViewResource, bool> filter) =>
             Filter(await Generics(), filter);
 
+        /// <summary>
+        /// retrieves a list of health service resources given a constraint
+        /// </summary>
+        /// <param name="filter">boolean function defineing constraint</param>
+        /// <returns>list of resources</returns>
         public static async Task<IEnumerable<HealthViewResourceService>> HealthServices(Func<HealthViewResourceService, bool> filter) =>
             Filter(await HealthServices(), filter);
 
+        /// <summary>
+        /// retrieves a list of map resources given a constraint
+        /// </summary>
+        /// <param name="filter">boolean function defineing constraint</param>
+        /// <returns>list of resources</returns>
         public static async Task<IEnumerable<ViewMapData>> MapData(Func<ViewMapData, bool> filter) =>
             Filter(await MapData(), filter);
 
+        /// <summary>
+        /// retrieves a list of shelter resources given a constraint
+        /// </summary>
+        /// <param name="filter">boolean function defineing constraint</param>
+        /// <returns>list of resources</returns>
         public static async Task<IEnumerable<ShelterViewResource>> Shelters(Func<ShelterViewResource, bool> filter) =>
             Filter(await Shelters(), filter);
 
+        /// <summary>
+        /// retrieves a list of user resources given a constraint
+        /// </summary>
+        /// <param name="filter">boolean function defineing constraint</param>
+        /// <returns>list of resources</returns>
         public static async Task<IEnumerable<UsersView>> Users(Func<UsersView, bool> filter) =>
             Filter(await Users(), filter);
     }
