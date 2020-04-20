@@ -147,13 +147,62 @@ namespace CoOp19.Lib
             return new UsersView(map, item);
         }
 
-        private static IEnumerable<T> Filter<T>(Func<IEnumerable<T>> getItem, Func<T, bool> check)
+        private static IEnumerable<T> Filter<T>(IEnumerable<T> list, Func<T, bool> check)
         {
-            return from item in getItem().ToList()
+            return from item in list
                    where check(item)
                    select item;
         }
+        
+        public static bool InRadius(decimal xn, decimal yn, decimal xw, decimal yw, decimal r)
+        {
+            var Radius = Math.Pow((double)r, 2);
+            var North = Math.Pow((double)(xn - yn), 2);
+            var West = Math.Pow((double)(xw - yw), 2);
+            return North + West <= Radius;
+        }
 
-        //public async Task<IEnumerable<>>
+        public static async Task<IEnumerable<ConsumableViewResource>> Consumables(decimal n, decimal w, decimal r) =>
+            Filter(await Consumables(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
+
+        public static async Task<IEnumerable<HealthViewResource>> HealthResources(decimal n, decimal w, decimal r) =>
+            Filter(await HealthResources(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
+
+        public static async Task<IEnumerable<GenericViewResource>> Generics(decimal n, decimal w, decimal r) =>
+            Filter(await Generics(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
+
+        public static async Task<IEnumerable<HealthViewResourceService>> HealthServices(decimal n, decimal w, decimal r) =>
+            Filter(await HealthServices(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
+
+        public static async Task<IEnumerable<ViewMapData>> MapData(decimal n, decimal w, decimal r) =>
+            Filter(await MapData(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
+
+        public static async Task<IEnumerable<ShelterViewResource>> Shelters(decimal n, decimal w, decimal r) =>
+            Filter(await Shelters(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
+
+        public static async Task<IEnumerable<UsersView>> Users(decimal n, decimal w, decimal r) =>
+            Filter(await Users(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
+
+
+        public static async Task<IEnumerable<ConsumableViewResource>> Consumables(Func<ConsumableViewResource, bool> filter) =>
+            Filter(await Consumables(), filter);
+
+        public static async Task<IEnumerable<HealthViewResource>> HealthResources(Func<HealthViewResource, bool> filter) =>
+            Filter(await HealthResources(), filter);
+
+        public static async Task<IEnumerable<GenericViewResource>> Generics(Func<GenericViewResource, bool> filter) =>
+            Filter(await Generics(), filter);
+
+        public static async Task<IEnumerable<HealthViewResourceService>> HealthServices(Func<HealthViewResourceService, bool> filter) =>
+            Filter(await HealthServices(), filter);
+
+        public static async Task<IEnumerable<ViewMapData>> MapData(Func<ViewMapData, bool> filter) =>
+            Filter(await MapData(), filter);
+
+        public static async Task<IEnumerable<ShelterViewResource>> Shelters(Func<ShelterViewResource, bool> filter) =>
+            Filter(await Shelters(), filter);
+
+        public static async Task<IEnumerable<UsersView>> Users(Func<UsersView, bool> filter) =>
+            Filter(await Users(), filter);
     }
 }

@@ -18,22 +18,25 @@ namespace CoOp19.Lib.Models
             State = map.State;
             Name = gen.Name;
             Description = gen.Description;
-            RecName = consumable.RecName;
         }
 
-        public ConsumableResource ToData()
+        public ConsumableResource ToData(MapData map)
         {
+            var gen = new GenericResource()
+            {
+                Name = this.Name,
+                Description = this.Description,
+                Loc = map
+            };
             return new ConsumableResource
             {
                 Price = this.Price,
                 Quantity = this.Quantity,
-                RecName = this.RecName,
-                ResourceId = this.ResourceId
+                Resource = gen
             };
         }
 
         public int Id { get; set; }
-        public string RecName { get; set; }
         public int ResourceId { get; set; }
         public decimal? Price { get; set; }
         public int Quantity { get; set; }

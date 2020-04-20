@@ -13,21 +13,39 @@ namespace CoOp19.App.Controllers
     public class GenericResourcesController : ControllerBase
     {
         [HttpGet]
-        public async Task<IEnumerable<GenericViewResource>> GetHealthResources()
+        public async Task<ActionResult<IEnumerable<GenericViewResource>>> GetAction()
         {
-            return await Get.Generics();
+            return Ok(await Get.Generics());
         }
 
         [HttpGet("{ID}")]
-        public async Task<GenericViewResource> GetHealthResource(int id)
+        public async Task<ActionResult<GenericViewResource>> GetAction(int id)
         {
-            return await Get.Generic(id);
+            return Ok(await Get.Generic(id));
+        }
+
+        [HttpGet("{North}/{West}/{Radius}")]
+        public async Task<ActionResult<GenericViewResource>> GetAction(decimal North, decimal West, decimal Radius)
+        {
+            return Ok(await Get.Generics(North, West, Radius));
+        }
+
+        [HttpGet("City/{city}")]
+        public async Task<ActionResult<GenericViewResource>> GetActionCity(string city)
+        {
+            return Ok(await Get.Generics(item => item.City == city));
+        }
+
+        [HttpGet("State/{state}")]
+        public async Task<ActionResult<GenericViewResource>> GetActionState(string state)
+        {
+            return Ok(await Get.Generics(item => item.State == state));
         }
 
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(GenericViewResource))]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<GenericViewResource>> PostAsync([FromBody] GenericViewResource gen)
+        public async Task<ActionResult<GenericViewResource>> PostAction([FromBody] GenericViewResource gen)
         {
             await Post.AddGeneric(gen);
             return Ok(gen);
