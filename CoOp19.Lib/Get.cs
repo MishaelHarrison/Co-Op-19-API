@@ -2,6 +2,7 @@
 using CoOp19.Lib.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CoOp19.Lib
@@ -146,5 +147,13 @@ namespace CoOp19.Lib
             return new UsersView(map, item);
         }
 
+        private static IEnumerable<T> Filter<T>(Func<IEnumerable<T>> getItem, Func<T, bool> check)
+        {
+            return from item in getItem().ToList()
+                   where check(item)
+                   select item;
+        }
+
+        //public async Task<IEnumerable<>>
     }
 }

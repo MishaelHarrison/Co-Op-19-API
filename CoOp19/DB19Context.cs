@@ -91,7 +91,7 @@ namespace CoOp19.Dtb
 
                 entity.Property(e => e.EstCost).HasColumnType("money");
 
-                entity.Property(e => e.RecourceId).HasColumnName("Recource_ID");
+                entity.Property(e => e.RecourceId).HasColumnName("HealthRes");
 
                 entity.Property(e => e.ServiceDesc)
                     .IsRequired()
