@@ -24,6 +24,24 @@ namespace CoOp19.App.Controllers
             return await Get.HealthResource(id);
         }
 
+        [HttpGet("{North}/{West}/{Radius}")]
+        public async Task<ActionResult<HealthViewResource>> GetAction(decimal North, decimal West, decimal Radius)
+        {
+            return Ok(await Get.HealthResources(North, West, Radius));
+        }
+
+        [HttpGet("City/{city}")]
+        public async Task<ActionResult<HealthViewResource>> GetActionCity(string city)
+        {
+            return Ok(await Get.HealthResources(item => item.City == city));
+        }
+
+        [HttpGet("State/{state}")]
+        public async Task<ActionResult<HealthViewResource>> GetActionState(string state)
+        {
+            return Ok(await Get.HealthResources(item => item.State == state));
+        }
+
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(HealthViewResource))]
         [ProducesResponseType(400)]

@@ -1,4 +1,5 @@
 using CoOp19.Dtb;
+using CoOp19.Lib;
 using CoOp19.Lib.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -11,24 +12,42 @@ namespace CoOp19.App.Controllers
     public class HealthRecourceServiceController : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> Get()
+        public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> GetAction()
         {
-            return Ok(await Lib.Get.HealthServices());
+            return Ok(await Get.HealthServices());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<HealthViewResourceService>> Get(int id)
+        public async Task<ActionResult<HealthViewResourceService>> GetAction(int id)
         {
-            return await Lib.Get.HealthService(id);
+            return await Get.HealthService(id);
+        }
+
+        [HttpGet("{North}/{West}/{Radius}")]
+        public async Task<ActionResult<HealthViewResourceService>> GetAction(decimal North, decimal West, decimal Radius)
+        {
+            return Ok(await Get.HealthServices(North, West, Radius));
+        }
+
+        [HttpGet("City/{city}")]
+        public async Task<ActionResult<HealthViewResourceService>> GetActionCity(string city)
+        {
+            return Ok(await Get.HealthServices(item => item.City == city));
+        }
+
+        [HttpGet("State/{state}")]
+        public async Task<ActionResult<HealthViewResourceService>> GetActionState(string state)
+        {
+            return Ok(await Get.HealthServices(item => item.State == state));
         }
 
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(HealthViewResourceService))]
         [ProducesResponseType(400)]
-        public async Task<HealthViewResourceService> Post([FromBody] HealthViewResourceService serv)
+        public async Task<ActionResult<HealthViewResourceService>> PostAction([FromBody] HealthViewResourceService serv)
         {
-            await Lib.Post.AddHealthResourceService(serv);
-            return serv;
+            await Post.AddHealthResourceService(serv);
+            return Ok(serv);
         }
     }
 }

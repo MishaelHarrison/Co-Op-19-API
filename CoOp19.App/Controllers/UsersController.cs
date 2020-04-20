@@ -24,6 +24,24 @@ namespace CoOp19.App.Controllers
             return await Get.User(id);
         }
 
+        [HttpGet("{North}/{West}/{Radius}")]
+        public async Task<ActionResult<UsersView>> GetAction(decimal North, decimal West, decimal Radius)
+        {
+            return Ok(await Get.Users(North, West, Radius));
+        }
+
+        [HttpGet("City/{city}")]
+        public async Task<ActionResult<UsersView>> GetActionCity(string city)
+        {
+            return Ok(await Get.Users(item => item.City == city));
+        }
+
+        [HttpGet("State/{state}")]
+        public async Task<ActionResult<UsersView>> GetActionState(string state)
+        {
+            return Ok(await Get.Users(item => item.State == state));
+        }
+
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(UsersView))]
         [ProducesResponseType(400)]
