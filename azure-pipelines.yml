@@ -1,0 +1,28 @@
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+jobs:
+
+- job: build
+
+  steps:
+  
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'build'
+
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'publish'
+      publishWebProjects: true
+
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Pay-As-You-Go Dev/Test(3c1324b2-479b-4445-ba09-0814a6b4f9bd)'
+      appType: 'webApp'
+      WebAppName: 'DB-19'
+      packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
