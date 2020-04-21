@@ -11,12 +11,17 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class HealthRecourceServiceController : ControllerBase
     {
+       
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> GetAction()
         {
             return Ok(await Get.HealthServices());
         }
-
+        /// <summary>
+        /// gets a single healthservice resource by "id"
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>a single healthservice resource</returns>
         [HttpGet("{id}")]
         public async Task<ActionResult<HealthViewResourceService>> GetAction(int id)
         {
@@ -40,7 +45,11 @@ namespace CoOp19.App.Controllers
         {
             return Ok(await Get.HealthServices(item => item.State == state));
         }
-
+        /// <summary>
+        /// adds a single health service to health resource service
+        /// </summary>
+        /// <param name="serv"></param>
+        /// <returns>a single health service resource</returns>
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(HealthViewResourceService))]
         [ProducesResponseType(400)]

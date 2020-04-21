@@ -10,7 +10,7 @@ namespace CoOp19.Dtb
     public class Output
     {
         //output a list of all in a table/////////////////////////////////////////////////////////////////////////////////////
-
+        
         static private async Task<IEnumerable<T>> Get<T> (Func<DB19Context,DbSet<T>> Item) where T: class
         {
             using (var context = new DB19Context())
@@ -63,7 +63,7 @@ namespace CoOp19.Dtb
             await Get(db => db.Users);
 
         //Output all of a foreign key////////////////////////////////////////////////////////////////////////////////////////
-
+        
         static private async Task<List<T>> Get<T>(Func<DB19Context, DbSet<T>> Item, Func<T,bool> Aplies) where T: class
         {
             using (var context = new DB19Context())
