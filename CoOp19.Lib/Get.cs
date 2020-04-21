@@ -9,6 +9,10 @@ namespace CoOp19.Lib
 {
     public class Get
     {
+        /// <summary>
+        /// returns a full list of all consumables
+        /// </summary>
+        /// <returns>list</returns>
         public static async Task<IEnumerable<ConsumableViewResource>> Consumables()
         {
             var output = new List<ConsumableViewResource>();
@@ -21,6 +25,10 @@ namespace CoOp19.Lib
             return output;
         }
 
+        /// <summary>
+        /// returns a full list of all health resources
+        /// </summary>
+        /// <returns>list</returns>
         public static async Task<IEnumerable<HealthViewResource>> HealthResources()
         {
             var output = new List<HealthViewResource>();
@@ -33,6 +41,10 @@ namespace CoOp19.Lib
             return output;
         }
 
+        /// <summary>
+        /// returns a full list of all generics
+        /// </summary>
+        /// <returns>list</returns>
         public static async Task<IEnumerable<GenericViewResource>> Generics()
         {
             var output = new List<GenericViewResource>();
@@ -44,6 +56,10 @@ namespace CoOp19.Lib
             return output;
         }
 
+        /// <summary>
+        /// returns a full list of all health services
+        /// </summary>
+        /// <returns>list</returns>
         public static async Task<IEnumerable<HealthViewResourceService>> HealthServices()
         {
             var output = new List<HealthViewResourceService>();
@@ -57,6 +73,10 @@ namespace CoOp19.Lib
             return output;
         }
 
+        /// <summary>
+        /// returns a full list of all map data
+        /// </summary>
+        /// <returns>list</returns>
         public static async Task<IEnumerable<ViewMapData>> MapData()
         {
             var output = new List<ViewMapData>();
@@ -67,6 +87,10 @@ namespace CoOp19.Lib
             return output;
         }
 
+        /// <summary>
+        /// returns a full list of all shelters
+        /// </summary>
+        /// <returns>list</returns>
         public static async Task<IEnumerable<ShelterViewResource>> Shelters()
         {
             var output = new List<ShelterViewResource>();
@@ -79,6 +103,10 @@ namespace CoOp19.Lib
             return output;
         }
 
+        /// <summary>
+        /// returns a full list of all users
+        /// </summary>
+        /// <returns>list</returns>
         public static async Task<IEnumerable<UsersView>> Users()
         {
             var output = new List<UsersView>();
@@ -89,6 +117,12 @@ namespace CoOp19.Lib
             }
             return output;
         }
+
+        /// <summary>
+        /// retrieves a single consumable resource
+        /// </summary>
+        /// <param name="id">primary key</param>
+        /// <returns>item of the entered id</returns>
         public static async Task<ConsumableViewResource> Consumable(int id)
         {
             var item = await Output.GetConsumableResource(id);
@@ -97,6 +131,11 @@ namespace CoOp19.Lib
             return new ConsumableViewResource(map, gen, item);
         }
 
+        /// <summary>
+        /// retrieves a single health resource
+        /// </summary>
+        /// <param name="id">primary key</param>
+        /// <returns>item of the entered id</returns>
         public static async Task<HealthViewResource> HealthResource(int id)
         {
             var item = await Output.GetHealthResource(id);
@@ -108,6 +147,11 @@ namespace CoOp19.Lib
             };
         }
 
+        /// <summary>
+        /// retrieves a single generic resource
+        /// </summary>
+        /// <param name="id">primary key</param>
+        /// <returns>item of the entered id</returns>
         public static async Task<GenericViewResource> Generic(int id)
         {
             var item = await Output.GetGenericResource(id);
@@ -118,6 +162,11 @@ namespace CoOp19.Lib
             };
         }
 
+        /// <summary>
+        /// retrieves a single health service resource
+        /// </summary>
+        /// <param name="id">primary key</param>
+        /// <returns>item of the entered id</returns>
         public static async Task<HealthViewResourceService> HealthService(int id)
         {
             var item = await Output.GetHealthResourceService(id);
@@ -127,11 +176,21 @@ namespace CoOp19.Lib
             return new HealthViewResourceService(item, health, gen, map);
         }
 
+        /// <summary>
+        /// retrieves a single mapdata resource
+        /// </summary>
+        /// <param name="id">primary key</param>
+        /// <returns>item of the entered id</returns>
         public static async Task<ViewMapData> MapData(int id)
         {
             return new ViewMapData(await Output.GetMapData(id));
         }
 
+        /// <summary>
+        /// retrieves a single shelter resource
+        /// </summary>
+        /// <param name="id">primary key</param>
+        /// <returns>item of the entered id</returns>
         public static async Task<ShelterViewResource> Shelter(int id)
         {
             var item = await Output.GetShelterResource(id);
@@ -140,6 +199,11 @@ namespace CoOp19.Lib
             return new ShelterViewResource(map, item, gen);
         }
 
+        /// <summary>
+        /// retrieves a single user resource
+        /// </summary>
+        /// <param name="id">primary key</param>
+        /// <returns>item of the entered id</returns>
         public static async Task<UsersView> User(int id)
         {
             var item = await Output.GetUser(id);
@@ -154,29 +218,71 @@ namespace CoOp19.Lib
                    select item;
         }
         
-        public static bool InRadius(decimal xn, decimal yn, decimal xw, decimal yw, decimal r)
+        private static bool InRadius(decimal xn, decimal yn, decimal xw, decimal yw, decimal r)
         {
-            var Radius = Math.Pow((double)r, 2);
+            var Radius = Math.Pow((double)r/69, 2);
             var North = Math.Pow((double)(xn - yn), 2);
             var West = Math.Pow((double)(xw - yw), 2);
             return North + West <= Radius;
         }
 
+        /// <summary>
+        /// retrieves all consumable resources within a geographical circle
+        /// </summary>
+        /// <param name="n">GPS North</param>
+        /// <param name="w">GPS W</param>
+        /// <param name="r">Radius</param>
+        /// <returns>Resulting list</returns>
         public static async Task<IEnumerable<ConsumableViewResource>> Consumables(decimal n, decimal w, decimal r) =>
             Filter(await Consumables(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
 
+        /// <summary>
+        /// retrieves all health resources within a geographical circle
+        /// </summary>
+        /// <param name="n">GPS North</param>
+        /// <param name="w">GPS W</param>
+        /// <param name="r">Radius</param>
+        /// <returns>Resulting list</returns>
         public static async Task<IEnumerable<HealthViewResource>> HealthResources(decimal n, decimal w, decimal r) =>
             Filter(await HealthResources(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
 
+        /// <summary>
+        /// retrieves all generic resources within a geographical circle
+        /// </summary>
+        /// <param name="n">GPS North</param>
+        /// <param name="w">GPS W</param>
+        /// <param name="r">Radius</param>
+        /// <returns>Resulting list</returns>
         public static async Task<IEnumerable<GenericViewResource>> Generics(decimal n, decimal w, decimal r) =>
             Filter(await Generics(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
 
+        /// <summary>
+        /// retrieves all health service resources within a geographical circle
+        /// </summary>
+        /// <param name="n">GPS North</param>
+        /// <param name="w">GPS W</param>
+        /// <param name="r">Radius</param>
+        /// <returns>Resulting list</returns>
         public static async Task<IEnumerable<HealthViewResourceService>> HealthServices(decimal n, decimal w, decimal r) =>
             Filter(await HealthServices(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
 
+        /// <summary>
+        /// retrieves all mapdata resources within a geographical circle
+        /// </summary>
+        /// <param name="n">GPS North</param>
+        /// <param name="w">GPS W</param>
+        /// <param name="r">Radius</param>
+        /// <returns>Resulting list</returns>
         public static async Task<IEnumerable<ViewMapData>> MapData(decimal n, decimal w, decimal r) =>
             Filter(await MapData(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
 
+        /// <summary>
+        /// retrieves all shelter resources within a geographical circle
+        /// </summary>
+        /// <param name="n">GPS North</param>
+        /// <param name="w">GPS W</param>
+        /// <param name="r">Radius</param>
+        /// <returns>Resulting list</returns>
         public static async Task<IEnumerable<ShelterViewResource>> Shelters(decimal n, decimal w, decimal r) =>
             Filter(await Shelters(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
 
@@ -185,8 +291,8 @@ namespace CoOp19.Lib
         /// </summary>
         /// <param name="n">GPS North</param>
         /// <param name="w">GPS W</param>
-        /// <param name="r"></param>
-        /// <returns></returns>
+        /// <param name="r">Radius</param>
+        /// <returns>Resulting list</returns>
         public static async Task<IEnumerable<UsersView>> Users(decimal n, decimal w, decimal r) =>
             Filter(await Users(), item => InRadius(item.Gpsn ?? default, n, item.Gpsw ?? default, w, r));
 
