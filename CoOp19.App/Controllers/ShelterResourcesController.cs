@@ -16,13 +16,13 @@ namespace CoOp19.App.Controllers
         {
             return await Get.Shelters();
         }
-
+        
         [HttpGet("{ID}")]
         public async Task<ShelterViewResource> GetOneActionAsync(int id)
         {
             return await Get.Shelter(id);
         }
-
+      
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(ShelterViewResource))]
         [ProducesResponseType(400)]

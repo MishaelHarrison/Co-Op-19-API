@@ -12,12 +12,13 @@ namespace CoOp19.App.Controllers
     public class UsersController : ControllerBase
     {
         // GET: api/Users
+        
         [HttpGet]
         public async Task<ActionResult<IEnumerable<UsersView>>> GetUsers()
         {
             return Ok(await Get.Users());
         }
-
+        
         [HttpGet("{ID}")]
         public async Task<UsersView> GetUserAsync(int id)
         {

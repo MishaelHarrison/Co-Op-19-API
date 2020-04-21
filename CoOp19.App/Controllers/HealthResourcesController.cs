@@ -17,13 +17,21 @@ namespace CoOp19.App.Controllers
         {
             return await Get.HealthResources();
         }
-        
+        /// <summary>
+        /// gets the healthcontrol resource by "id"
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>a sinlge health resource</returns>
         [HttpGet("{ID}")]
         public async Task<HealthViewResource> GetHealthResource(int id)
         {
             return await Get.HealthResource(id);
         }
-
+        /// <summary>
+        /// adds a healthresource control to healthview resource
+        /// </summary>
+        /// <param name="health"></param>
+        /// <returns> a single health resource control</returns>
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(HealthViewResource))]
         [ProducesResponseType(400)]
