@@ -72,10 +72,10 @@ namespace CoOp19.App.Controllers
         /// </summary>
         /// <param name="city">name of city</param>
         /// <returns>querryed list</returns>
-        [HttpGet("username/{city}")]
+        [HttpGet("username/{U}")]
         public async Task<ActionResult<UsersView>> GetActionUserName(string U)
         {
-            return Ok(await Get.Users(item => item.UserName == U));
+            return Ok(await Get.Users(item => item.UserName.Trim() == U));
         }
 
         /// <summary>

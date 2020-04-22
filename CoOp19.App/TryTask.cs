@@ -15,11 +15,11 @@
 //        {
 //            throw new Exception("Exeption not handled");
 //        }
-//        public async Task<ActionResult<T>> Run(Func<Task<T>> Task, Func<T,ActionResult<T>> Pass, Func<ActionResult<T>> Fail = new ActionResult())
+//        public async Task<ActionResult<T>> Run(Func<Task<T>> Task, Func<T, ActionResult<T>> Pass, Func<ActionResult<T>> Fail = { throw; } )
 //        {
 //            T item;
 //            ActionResult<T> output;
-                
+
 //            try
 //            {
 //                item = await Task();
