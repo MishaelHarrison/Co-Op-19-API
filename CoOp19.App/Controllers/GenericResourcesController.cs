@@ -12,6 +12,10 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class GenericResourcesController : ControllerBase
     {
+        /// <summary>
+        /// retrieves a list of all generic resources
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GenericViewResource>>> GetAction()
         {
@@ -28,7 +32,7 @@ namespace CoOp19.App.Controllers
             return Ok(await Get.Generic(id));
         }
         /// <summary>
-        /// gets GPS cordinates of generic resources 
+        /// retrieves all generic resources within a specified radius
         /// </summary>
         /// <param name="North"></param>
         /// <param name="West"></param>
@@ -40,7 +44,7 @@ namespace CoOp19.App.Controllers
             return Ok(await Get.Generics(North, West, Radius));
         }
         /// <summary>
-        /// gets the city with its generic resource
+        /// retrieves a list of generic resource within a given city
         /// </summary>
         /// <param name="city"></param>
         /// <returns>a single city with generic resources</returns>
@@ -50,7 +54,7 @@ namespace CoOp19.App.Controllers
             return Ok(await Get.Generics(item => item.City == city));
         }
         /// <summary>
-        /// gets the state with generic resource
+        /// retrieves a list of generic resources within a given state
         /// </summary>
         /// <param name="state"></param>
         /// <returns>a single state with generic resource</returns>
@@ -60,10 +64,10 @@ namespace CoOp19.App.Controllers
             return Ok(await Get.Generics(item => item.State == state));
         }
         /// <summary>
-        /// adds a single generic to generic resource
+        /// post a generic resource to the database
         /// </summary>
         /// <param name="gen"></param>
-        /// <returns>a single generic resource</returns>
+        /// <returns>input items with updated ids</returns>
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(GenericViewResource))]
         [ProducesResponseType(400)]

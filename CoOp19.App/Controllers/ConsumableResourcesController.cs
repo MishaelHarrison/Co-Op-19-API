@@ -10,7 +10,10 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class ConsumableResourcesController : ControllerBase
     {
-        
+        /// <summary>
+        /// retrieves all consumable resources
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetAction()
         {
@@ -27,7 +30,7 @@ namespace CoOp19.App.Controllers
             return Ok(await Get.Consumable(id));
         }
         /// <summary>
-        /// gets the GPS consumables cordinates for primary key "id"
+        /// retrieves all consumables within a specified radius
         /// </summary>
         /// <param name="North"></param>
         /// <param name="West"></param>
@@ -39,7 +42,7 @@ namespace CoOp19.App.Controllers
             return Ok(await Get.Consumables(North, West, Radius));
         }
         /// <summary>
-        /// gets the city with consumable using primary key "id"
+        /// retrieves all consumables within a given city
         /// </summary>
         /// <param name="city"></param>
         /// <returns>a single city with its consumables</returns>
@@ -49,7 +52,7 @@ namespace CoOp19.App.Controllers
             return Ok(await Get.Consumables(item => item.City == city));
         }
         /// <summary>
-        /// gets the state with consumable with primary key "id"
+        /// retrieves all consumables within a given state
         /// </summary>
         /// <param name="state"></param>
         /// <returns>a single state with its consumables</returns>
@@ -59,10 +62,10 @@ namespace CoOp19.App.Controllers
             return Ok(await Get.Consumables(item => item.State == state));
         }
         /// <summary>
-        /// adds a consumable to consumable resources
+        /// post a consumable to the database
         /// </summary>
         /// <param name="consume"></param>
-        /// <returns>a single consumable</returns>
+        /// <returns>input items with updated ids</returns>
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(ConsumableViewResource))]
         [ProducesResponseType(400)]
