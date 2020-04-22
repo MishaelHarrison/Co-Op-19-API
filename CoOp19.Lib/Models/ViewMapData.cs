@@ -9,9 +9,9 @@ namespace CoOp19.Lib.Models
             ID = map.Id;
             Gpsn = map.Gpsn;
             Gpsw = map.Gpsw;
-            Address = map.Address.Trim();
-            City = map.City.Trim();
-            State = map.State.Trim();
+            Address = map.Address;
+            City = map.City;
+            State = map.State;
         }
 
         public MapData ToData()
