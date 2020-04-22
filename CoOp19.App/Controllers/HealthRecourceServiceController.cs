@@ -31,29 +31,43 @@ namespace CoOp19.App.Controllers
         {
             return await Get.HealthService(id);
         }
-
+        /// <summary>
+        /// retrives all health resources within a specified radius
+        /// </summary>
+        /// <param name="North"></param>
+        /// <param name="West"></param>
+        /// <param name="Radius"></param>
+        /// <returns></returns>
         [HttpGet("{North}/{West}/{Radius}")]
         public async Task<ActionResult<HealthViewResourceService>> GetAction(decimal North, decimal West, decimal Radius)
         {
             return Ok(await Get.HealthServices(North, West, Radius));
         }
-
+        /// <summary>
+        /// retrieves all health resources within a given city
+        /// </summary>
+        /// <param name="city"></param>
+        /// <returns></returns>
         [HttpGet("City/{city}")]
         public async Task<ActionResult<HealthViewResourceService>> GetActionCity(string city)
         {
             return Ok(await Get.HealthServices(item => item.City == city));
         }
-
+        /// <summary>
+        /// retrieves all health resources within a given state
+        /// </summary>
+        /// <param name="state"></param>
+        /// <returns></returns>
         [HttpGet("State/{state}")]
         public async Task<ActionResult<HealthViewResourceService>> GetActionState(string state)
         {
             return Ok(await Get.HealthServices(item => item.State == state));
         }
         /// <summary>
-        /// adds a single health service to health resource service
+        /// post a health service to the database
         /// </summary>
         /// <param name="serv"></param>
-        /// <returns>a single health service resource</returns>
+        /// <returns>input items with updated ids</returns>
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(HealthViewResourceService))]
         [ProducesResponseType(400)]
