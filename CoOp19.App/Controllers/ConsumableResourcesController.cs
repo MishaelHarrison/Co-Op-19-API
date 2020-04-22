@@ -11,7 +11,7 @@ namespace CoOp19.App.Controllers
     public class ConsumableResourcesController : ControllerBase
     {
         /// <summary>
-        /// retrieves all consumable resources
+        /// retrieves a list of all consumables
         /// </summary>
         /// <returns></returns>
         [HttpGet]

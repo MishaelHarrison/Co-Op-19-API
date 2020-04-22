@@ -11,8 +11,9 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class HealthRecourceServiceController : ControllerBase
     {
+       
         /// <summary>
-        /// retrieves all health resources 
+        /// retrieves a list of all health resources
         /// </summary>
         /// <returns></returns>
         [HttpGet]

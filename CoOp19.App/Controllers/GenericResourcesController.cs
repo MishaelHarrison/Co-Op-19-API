@@ -13,7 +13,7 @@ namespace CoOp19.App.Controllers
     public class GenericResourcesController : ControllerBase
     {
         /// <summary>
-        /// retrieves a list of all generic resources
+        /// retrieves a list of all generic
         /// </summary>
         /// <returns></returns>
         [HttpGet]

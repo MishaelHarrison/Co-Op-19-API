@@ -9,8 +9,8 @@ namespace CoOp19.Lib.Models
         {
             Id = user.Id;
             Loc = user.Loc;
-            UserName = user.UserName;
-            Password = user.Password;
+            UserName = user.UserName.Trim();
+            Password = user.Password.Trim();
             Fname = user.Fname;
             Lname = user.Lname;
             Phone = user.Phone;
