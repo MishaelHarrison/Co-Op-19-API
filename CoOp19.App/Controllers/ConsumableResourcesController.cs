@@ -10,7 +10,10 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class ConsumableResourcesController : ControllerBase
     {
-        
+        /// <summary>
+        /// retrieves a list of all consumables
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetAction()
         {

@@ -12,6 +12,10 @@ namespace CoOp19.App.Controllers
     public class HealthRecourceServiceController : ControllerBase
     {
        
+        /// <summary>
+        /// retrieves a list of all health resources
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> GetAction()
         {

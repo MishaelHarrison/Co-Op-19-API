@@ -12,6 +12,10 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class GenericResourcesController : ControllerBase
     {
+        /// <summary>
+        /// retrieves a list of all generic
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GenericViewResource>>> GetAction()
         {

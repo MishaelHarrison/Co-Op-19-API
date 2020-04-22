@@ -68,6 +68,17 @@ namespace CoOp19.App.Controllers
         }
 
         /// <summary>
+        /// returns the user with a specified username
+        /// </summary>
+        /// <param name="city">name of city</param>
+        /// <returns>querryed list</returns>
+        [HttpGet("username/{city}")]
+        public async Task<ActionResult<UsersView>> GetActionUserName(string U)
+        {
+            return Ok(await Get.Users(item => item.UserName == U));
+        }
+
+        /// <summary>
         /// enters a new user to the database
         /// </summary>
         /// <param name="User">input</param>

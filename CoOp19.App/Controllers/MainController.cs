@@ -19,6 +19,11 @@ namespace CoOp19.App.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MapData>>> GetAction()
         {
+            //return TryTask<IEnumerable<MapData>>.Run(async ()=>
+            //{
+            //    return await Get.MapData()
+            //},
+            //200);
             return Ok(await Get.MapData());
         }
 
