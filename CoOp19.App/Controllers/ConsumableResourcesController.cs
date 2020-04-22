@@ -1,6 +1,7 @@
 using CoOp19.Lib;
 using CoOp19.Lib.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Razor.Language;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -17,7 +18,7 @@ namespace CoOp19.App.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetAction()
         {
-            return Ok(await Get.Consumables());
+            return await TryTask<IEnumerable<ConsumableViewResource>>.Run(async ()=> Ok(await Get.Consumables()));
         }
         /// <summary>
         /// gets a single consumable of primary key "id"
@@ -27,7 +28,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ConsumableViewResource>> GetAction(int id)
         {
-            return Ok(await Get.Consumable(id));
+            return await TryTask<ConsumableViewResource>.Run(async () => Ok(await Get.Consumable(id)));
         }
         /// <summary>
         /// retrieves all consumables within a specified radius
@@ -37,9 +38,9 @@ namespace CoOp19.App.Controllers
         /// <param name="Radius"></param>
         /// <returns> cordinates of that location</returns>
         [HttpGet("{North}/{West}/{Radius}")]
-        public async Task<ActionResult<ConsumableViewResource>> GetAction(decimal North, decimal West, decimal Radius)
+        public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetAction(decimal North, decimal West, decimal Radius)
         {
-            return Ok(await Get.Consumables(North, West, Radius));
+            return await TryTask<IEnumerable<ConsumableViewResource>>.Run(async () => Ok(await Get.Consumables(North, West, Radius)));
         }
         /// <summary>
         /// retrieves all consumables within a given city
@@ -47,9 +48,9 @@ namespace CoOp19.App.Controllers
         /// <param name="city"></param>
         /// <returns>a single city with its consumables</returns>
         [HttpGet("City/{city}")]
-        public async Task<ActionResult<ConsumableViewResource>> GetActionCity(string city)
+        public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetActionCity(string city)
         {
-            return Ok(await Get.Consumables(item => item.City == city));
+            return await TryTask<IEnumerable<ConsumableViewResource>>.Run(async () => Ok(await Get.Consumables(item => item.City == city)));
         }
         /// <summary>
         /// retrieves all consumables within a given state
@@ -57,9 +58,9 @@ namespace CoOp19.App.Controllers
         /// <param name="state"></param>
         /// <returns>a single state with its consumables</returns>
         [HttpGet("State/{state}")]
-        public async Task<ActionResult<ConsumableViewResource>> GetActionState(string state)
+        public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetActionState(string state)
         {
-            return Ok(await Get.Consumables(item => item.State == state));
+            return await TryTask<IEnumerable<ConsumableViewResource>>.Run(async () => Ok(await Get.Consumables(item => item.State == state)));
         }
         /// <summary>
         /// post a consumable to the database
@@ -71,8 +72,11 @@ namespace CoOp19.App.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<ConsumableViewResource>> PostAction([FromBody] ConsumableViewResource consume)
         {
-            await Post.AddConsumable(consume);
-            return consume;
+            return await TryTask<ConsumableViewResource>.Run(async () =>
+            {
+                await Post.AddConsumable(consume);
+                return consume;
+            });
         }
     }
 }

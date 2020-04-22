@@ -2,9 +2,11 @@ using CoOp19.Dtb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Web.Mvc;
 
 namespace CoOp19.App
 {
@@ -36,7 +38,7 @@ namespace CoOp19.App
                                   });
             });
 
-            CoOp19.Dtb.StringData.ConnectionString = Configuration.GetConnectionString("Access");
+            StringData.ConnectionString = Configuration.GetConnectionString("Access");
 
             services.AddDbContext<DB19Context>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DB19Context")));

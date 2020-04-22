@@ -1,32 +1,35 @@
-﻿//using Microsoft.AspNetCore.Mvc;
-//using System;
-//using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System;
+using System.Net;
+using System.Threading.Tasks;
+using System.Web.Mvc;
 
-//namespace CoOp19.App
-//{
-//    public class TryTask<T> where T : class
-//    {
-//        readonly Exception
-//        private ActionResult<T> dflt()
-//        {
-//            throw new Exception("Exeption not handled");
-//        }
-//        public async Task<ActionResult<T>> Run(Func<Task<T>> Task, Func<T, ActionResult<T>> Pass, Func<ActionResult<T>> Fail = dflt)// = { throw new Exception("not implemented"); } )
-//        {
-//            T item;
-//            ActionResult<T> output;
+namespace CoOp19.App
+{
+    public class TryTask<T> where T : class
+    {
+        public static async Task<ActionResult<T>> Run(Func<Task<ActionResult<T>>> Task)
+        {
+            ActionResult<T> output;
 
-//            try
-//            {
-//                item = await Task();
-//                output = Pass(item);
-//            }
-//            catch (Exception)
-//            {
-//                output = Fail();
-//            }
+            try
+            {
+                output = await Task();
+            }
+            catch (Exception E)
+            {
+                if (E.Message == "Input" || E.Message == "Output")
+                {
+                    return new ObjectResult($"ERROR: {E.InnerException.Message}") { StatusCode = 400 };
+                }
+                else
+                {
+                    return new ObjectResult("Unhandled Error In Server") { StatusCode = 500 };
+                }
+            }
 
-//            return output;
-//        }
-//    }
-//}
+            return output;
+        }
+    }
+}

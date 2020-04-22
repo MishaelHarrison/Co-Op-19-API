@@ -16,9 +16,9 @@ namespace CoOp19.App.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<IEnumerable<ShelterViewResource>> GetActionAsync()
+        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionAsync()
         {
-            return await Get.Shelters();
+            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters()));
         }
 
         /// <summary>
@@ -27,9 +27,9 @@ namespace CoOp19.App.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{ID}")]
-        public async Task<ShelterViewResource> GetOneActionAsync(int id)
+        public async Task<ActionResult<ShelterViewResource>> GetOneActionAsync(int id)
         {
-            return await Get.Shelter(id);
+            return await TryTask<ShelterViewResource>.Run(async () => await Get.Shelter(id));
         }
 
         /// <summary>
@@ -40,9 +40,9 @@ namespace CoOp19.App.Controllers
         /// <param name="Radius">Radius</param>
         /// <returns></returns>
         [HttpGet("{North}/{West}/{Radius}")]
-        public async Task<ActionResult<ShelterViewResource>> GetAction(decimal North, decimal West, decimal Radius)
+        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetAction(decimal North, decimal West, decimal Radius)
         {
-            return Ok(await Get.Shelters(North, West, Radius));
+            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters(North, West, Radius)));
         }
 
         /// <summary>
@@ -51,9 +51,9 @@ namespace CoOp19.App.Controllers
         /// <param name="city"></param>
         /// <returns></returns>
         [HttpGet("City/{city}")]
-        public async Task<ActionResult<ShelterViewResource>> GetActionCity(string city)
+        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionCity(string city)
         {
-            return Ok(await Get.Shelters(item => item.City == city));
+            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters(item => item.City == city)));
         }
 
         /// <summary>
@@ -62,9 +62,9 @@ namespace CoOp19.App.Controllers
         /// <param name="state"></param>
         /// <returns></returns>
         [HttpGet("State/{state}")]
-        public async Task<ActionResult<ShelterViewResource>> GetActionState(string state)
+        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionState(string state)
         {
-            return Ok(await Get.Shelters(item => item.State == state));
+            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters(item => item.State == state)));
         }
 
         /// <summary>
@@ -77,8 +77,11 @@ namespace CoOp19.App.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<ShelterViewResource>> PostAsync([FromBody] ShelterViewResource shelt)
         {
-            await Post.AddShelterResource(shelt);
-            return Ok(shelt);
+            return await TryTask<ShelterViewResource>.Run(async () =>
+            {
+                await Post.AddShelterResource(shelt);
+                return Ok(shelt);
+            });
         }
     }
 }

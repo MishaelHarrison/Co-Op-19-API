@@ -19,7 +19,7 @@ namespace CoOp19.App.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GenericViewResource>>> GetAction()
         {
-            return Ok(await Get.Generics());
+            return await TryTask<IEnumerable<GenericViewResource>>.Run(async () => Ok(await Get.Generics()));
         }
         /// <summary>
         /// gets a single generic resource "id"
@@ -29,7 +29,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("{ID}")]
         public async Task<ActionResult<GenericViewResource>> GetAction(int id)
         {
-            return Ok(await Get.Generic(id));
+            return await TryTask<GenericViewResource>.Run(async () => Ok(await Get.Generic(id)));
         }
         /// <summary>
         /// retrieves all generic resources within a specified radius
@@ -39,9 +39,9 @@ namespace CoOp19.App.Controllers
         /// <param name="Radius"></param>
         /// <returns> cordinates of that generic location</returns>
         [HttpGet("{North}/{West}/{Radius}")]
-        public async Task<ActionResult<GenericViewResource>> GetAction(decimal North, decimal West, decimal Radius)
+        public async Task<ActionResult<IEnumerable<GenericViewResource>>> GetAction(decimal North, decimal West, decimal Radius)
         {
-            return Ok(await Get.Generics(North, West, Radius));
+            return await TryTask<IEnumerable<GenericViewResource>>.Run(async () => Ok(await Get.Generics(North, West, Radius)));
         }
         /// <summary>
         /// retrieves a list of generic resource within a given city
@@ -49,9 +49,9 @@ namespace CoOp19.App.Controllers
         /// <param name="city"></param>
         /// <returns>a single city with generic resources</returns>
         [HttpGet("City/{city}")]
-        public async Task<ActionResult<GenericViewResource>> GetActionCity(string city)
+        public async Task<ActionResult<IEnumerable<GenericViewResource>>> GetActionCity(string city)
         {
-            return Ok(await Get.Generics(item => item.City == city));
+            return await TryTask<IEnumerable<GenericViewResource>>.Run(async () => Ok(await Get.Generics(item => item.City == city)));
         }
         /// <summary>
         /// retrieves a list of generic resources within a given state
@@ -59,9 +59,9 @@ namespace CoOp19.App.Controllers
         /// <param name="state"></param>
         /// <returns>a single state with generic resource</returns>
         [HttpGet("State/{state}")]
-        public async Task<ActionResult<GenericViewResource>> GetActionState(string state)
+        public async Task<ActionResult<IEnumerable<GenericViewResource>>> GetActionState(string state)
         {
-            return Ok(await Get.Generics(item => item.State == state));
+            return await TryTask<IEnumerable<GenericViewResource>>.Run(async () => Ok(await Get.Generics(item => item.State == state)));
         }
         /// <summary>
         /// post a generic resource to the database
@@ -73,8 +73,11 @@ namespace CoOp19.App.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<GenericViewResource>> PostAction([FromBody] GenericViewResource gen)
         {
-            await Post.AddGeneric(gen);
-            return Ok(gen);
+            return await TryTask<GenericViewResource>.Run(async () =>
+            {
+                await Post.AddGeneric(gen);
+                return Ok(gen);
+            });
         }
     }
 }

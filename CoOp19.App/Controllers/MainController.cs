@@ -19,12 +19,7 @@ namespace CoOp19.App.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MapData>>> GetAction()
         {
-            //return TryTask<IEnumerable<MapData>>.Run(async ()=>
-            //{
-            //    return await Get.MapData()
-            //},
-            //200);
-            return Ok(await Get.MapData());
+            return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await Get.MapData()));
         }
 
         /// <summary>
@@ -33,9 +28,9 @@ namespace CoOp19.App.Controllers
         /// <param name="id">id of item to search</param>
         /// <returns>single map data</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<IEnumerable<MapData>>> GetAction(int id)
+        public async Task<ActionResult<MapData>> GetAction(int id)
         {
-            return Ok(await Get.MapData(id));
+            return await TryTask<MapData>.Run(async () => Ok(await Get.MapData(id)));
         }
 
         /// <summary>
@@ -46,9 +41,9 @@ namespace CoOp19.App.Controllers
         /// <param name="Radius"></param>
         /// <returns></returns>
         [HttpGet("{North}/{West}/{Radius}")]
-        public async Task<ActionResult<MapData>> GetAction(decimal North, decimal West, decimal Radius)
+        public async Task<ActionResult<IEnumerable<MapData>>> GetAction(decimal North, decimal West, decimal Radius)
         {
-            return Ok(await Get.HealthResources(North, West, Radius));
+            return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await Get.MapData(North, West, Radius)));
         }
 
         /// <summary>
@@ -57,9 +52,9 @@ namespace CoOp19.App.Controllers
         /// <param name="city"></param>
         /// <returns></returns>
         [HttpGet("City/{city}")]
-        public async Task<ActionResult<MapData>> GetActionCity(string city)
+        public async Task<ActionResult<IEnumerable<MapData>>> GetActionCity(string city)
         {
-            return Ok(await Get.HealthResources(item => item.City == city));
+            return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await Get.MapData(item => item.City == city)));
         }
 
         /// <summary>
@@ -70,7 +65,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("State/{state}")]
         public async Task<ActionResult<MapData>> GetActionState(string state)
         {
-            return Ok(await Get.HealthResources(item => item.State == state));
+            return await TryTask<MapData>.Run(async () => Ok(await Get.MapData(item => item.State == state)));
         }
 
     }
