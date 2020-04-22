@@ -9,17 +9,17 @@ namespace CoOp19.Lib.Models
         {
             Id = user.Id;
             Loc = user.Loc;
-            UserName = user.UserName;
-            Password = user.Password;
-            Fname = user.Fname;
-            Lname = user.Lname;
+            UserName = user.UserName.Trim();
+            Password = user.Password.Trim();
+            Fname = user.Fname.Trim();
+            Lname = user.Lname.Trim();
             Phone = user.Phone;
-            Email = user.Email;
+            Email = user.Email.Trim();
             Gpsn = map.Gpsn;
             Gpsw = map.Gpsw;
-            Address = map.Address;
-            City = map.City;
-            State = map.State;
+            Address = map.Address.Trim();
+            City = map.City.Trim();
+            State = map.State.Trim();
         }
 
         public Users ToData()

@@ -17,13 +17,13 @@ namespace CoOp19.Lib.Models
             TestPrice = health.TestPrice;
             Gpsn = map.Gpsn;
             Gpsw = map.Gpsw;
-            Address = map.Address;
-            City = map.City;
-            State = map.State;
-            Name = gen.Name;
-            Description = gen.Description;
-            ServiceName = serv.ServiceName;
-            ServiceDesc = serv.ServiceDesc;
+            Address = map.Address.Trim();
+            City = map.City.Trim();
+            State = map.State.Trim();
+            Name = gen.Name.Trim();
+            Description = gen.Description.Trim();
+            ServiceName = serv.ServiceName.Trim();
+            ServiceDesc = serv.ServiceDesc.Trim();
             AvgWaitHours = serv.AvgWaitHours;
             EstCost = serv.EstCost;
         }

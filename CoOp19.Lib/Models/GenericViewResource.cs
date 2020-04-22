@@ -12,11 +12,11 @@ namespace CoOp19.Lib.Models
             LocId = map.Id;
             Gpsn = map.Gpsn;
             Gpsw = map.Gpsw;
-            Address = map.Address;
-            City = map.City;
-            State = map.State;
-            Name = generic.Name;
-            Description = generic.Description;
+            Address = map.Address.Trim();
+            City = map.City.Trim();
+            State = map.State.Trim();
+            Name = generic.Name.Trim();
+            Description = generic.Description.Trim();
 
         }
 

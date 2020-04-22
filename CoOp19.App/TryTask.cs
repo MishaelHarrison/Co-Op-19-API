@@ -18,17 +18,17 @@
 //        public async Task<ActionResult<T>> Run(Func<Task<T>> Task, Func<T, ActionResult<T>> Pass, Func<ActionResult<T>> Fail = { throw; } )
 //        {
 //            T item;
-//            ActionResult<T> output;
+//        ActionResult<T> output;
 
 //            try
 //            {
 //                item = await Task();
-//                output = Pass(item);
-//            }
+//        output = Pass(item);
+//    }
 //            catch (Exception)
 //            {
 //                output = Fail();
-//            }
+//}
 
 //            return output;
 //        }

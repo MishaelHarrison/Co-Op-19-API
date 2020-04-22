@@ -13,11 +13,11 @@ namespace CoOp19.Lib.Models
             Quantity = consumable.Quantity;
             Gpsn = map.Gpsn;
             Gpsw = map.Gpsw;
-            Address = map.Address;
-            City = map.City;
-            State = map.State;
-            Name = gen.Name;
-            Description = gen.Description;
+            Address = map.Address.Trim();
+            City = map.City.Trim();
+            State = map.State.Trim();
+            Name = gen.Name.Trim();
+            Description = gen.Description.Trim();
         }
 
         public ConsumableResource ToData(MapData map)
