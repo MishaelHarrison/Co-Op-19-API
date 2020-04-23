@@ -1,7 +1,7 @@
-using CoOp19.Dtb;
 using CoOp19.Lib;
 using CoOp19.Lib.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,6 +11,13 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class ShelterResourcesController : ControllerBase
     {
+        private ILogger log;
+
+        public ShelterResourcesController(ILogger<ShelterResourcesController> logger)
+        {
+            log = logger;
+        }
+        
         /// <summary>
         /// retrieves a list of all shelters
         /// </summary>
@@ -18,6 +25,7 @@ namespace CoOp19.App.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionAsync()
         {
+            log.LogInformation("Querrys the database for all shelther resources");
             return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters()));
         }
 
@@ -29,6 +37,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("{ID}")]
         public async Task<ActionResult<ShelterViewResource>> GetOneActionAsync(int id)
         {
+            log.LogInformation($"Querrys the database a shelter resource with id:{id}");
             return await TryTask<ShelterViewResource>.Run(async () => await Get.Shelter(id));
         }
 
@@ -42,6 +51,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("{North}/{West}/{Radius}")]
         public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetAction(decimal North, decimal West, decimal Radius)
         {
+            log.LogInformation($"Querrying the database for all shelter resource within {Radius} miles of N{North}, W{West}");
             return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters(North, West, Radius)));
         }
 
@@ -53,6 +63,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("City/{city}")]
         public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionCity(string city)
         {
+            log.LogInformation($"Querrys the database for all shelter resources within {city}");
             return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters(item => item.City == city)));
         }
 
@@ -64,6 +75,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("State/{state}")]
         public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionState(string state)
         {
+            log.LogInformation($"Querrys the database for all shelter resources within {state}");
             return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters(item => item.State == state)));
         }
 
@@ -77,6 +89,7 @@ namespace CoOp19.App.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<ShelterViewResource>> PostAsync([FromBody] ShelterViewResource shelt)
         {
+            log.LogInformation($"Adding {shelt.Name} to database");
             return await TryTask<ShelterViewResource>.Run(async () =>
             {
                 await Post.AddShelterResource(shelt);

@@ -1,7 +1,7 @@
 using CoOp19.Lib;
 using CoOp19.Lib.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Razor.Language;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -11,6 +11,13 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class ConsumableResourcesController : ControllerBase
     {
+        private ILogger log;
+
+        public ConsumableResourcesController(ILogger<ConsumableResourcesController> logger)
+        {
+            log = logger;
+        }
+        
         /// <summary>
         /// retrieves a list of all consumables
         /// </summary>
@@ -18,7 +25,8 @@ namespace CoOp19.App.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetAction()
         {
-            return await TryTask<IEnumerable<ConsumableViewResource>>.Run(async ()=> Ok(await Get.Consumables()));
+            log.LogInformation("Querrying all consumable resources");
+            return await TryTask<IEnumerable<ConsumableViewResource>>.Run(async () => Ok(await Get.Consumables()));
         }
         /// <summary>
         /// gets a single consumable of primary key "id"
@@ -28,6 +36,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ConsumableViewResource>> GetAction(int id)
         {
+            log.LogInformation($"Querring the database for a consumable resource with id:{id}");
             return await TryTask<ConsumableViewResource>.Run(async () => Ok(await Get.Consumable(id)));
         }
         /// <summary>
@@ -40,6 +49,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("{North}/{West}/{Radius}")]
         public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetAction(decimal North, decimal West, decimal Radius)
         {
+            log.LogInformation($"querrys the data base for all items within {Radius} miles of N{North}, W{West}");
             return await TryTask<IEnumerable<ConsumableViewResource>>.Run(async () => Ok(await Get.Consumables(North, West, Radius)));
         }
         /// <summary>
@@ -50,6 +60,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("City/{city}")]
         public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetActionCity(string city)
         {
+            log.LogInformation($"querrys the database for all consumable resources in {city}");
             return await TryTask<IEnumerable<ConsumableViewResource>>.Run(async () => Ok(await Get.Consumables(item => item.City == city)));
         }
         /// <summary>
@@ -60,6 +71,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("State/{state}")]
         public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetActionState(string state)
         {
+            log.LogInformation($"querrys the database for all consumable resources in {state}");
             return await TryTask<IEnumerable<ConsumableViewResource>>.Run(async () => Ok(await Get.Consumables(item => item.State == state)));
         }
         /// <summary>
@@ -72,6 +84,7 @@ namespace CoOp19.App.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<ConsumableViewResource>> PostAction([FromBody] ConsumableViewResource consume)
         {
+            log.LogInformation($"Adding {consume.Name} to consumable resources");
             return await TryTask<ConsumableViewResource>.Run(async () =>
             {
                 await Post.AddConsumable(consume);

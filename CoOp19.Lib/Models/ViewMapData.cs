@@ -25,7 +25,7 @@ namespace CoOp19.Lib.Models
                 State = this.State
             };
         }
-            
+
         public int ID { get; set; }
         public decimal? Gpsn { get; set; }
         public decimal? Gpsw { get; set; }

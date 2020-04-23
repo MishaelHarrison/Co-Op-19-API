@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-
 namespace CoOp19.Dtb.Entities
 {
     public partial class HealthResourceServices

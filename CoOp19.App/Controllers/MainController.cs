@@ -1,4 +1,3 @@
-using CoOp19.Dtb;
 using CoOp19.Dtb.Entities;
 using CoOp19.Lib;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +11,13 @@ namespace CoOp19.App.Controllers
     [Route("[controller]")]
     public class MainController : ControllerBase
     {
+        private ILogger log;
+
+        public MainController(ILogger<MainController> logger)
+        {
+            log = logger;
+        }
+
         /// <summary>
         /// retrieves a list of all map items
         /// </summary>
@@ -19,6 +25,7 @@ namespace CoOp19.App.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<MapData>>> GetAction()
         {
+            log.LogInformation("Querrying the database for all maped items");
             return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await Get.MapData()));
         }
 
@@ -30,6 +37,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<MapData>> GetAction(int id)
         {
+            log.LogInformation($"Querrying the database for item with id:{id}");
             return await TryTask<MapData>.Run(async () => Ok(await Get.MapData(id)));
         }
 
@@ -43,6 +51,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("{North}/{West}/{Radius}")]
         public async Task<ActionResult<IEnumerable<MapData>>> GetAction(decimal North, decimal West, decimal Radius)
         {
+            log.LogInformation($"Querrying the database for all items within {Radius} miles of N{North}, W{West}");
             return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await Get.MapData(North, West, Radius)));
         }
 
@@ -54,6 +63,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("City/{city}")]
         public async Task<ActionResult<IEnumerable<MapData>>> GetActionCity(string city)
         {
+            log.LogInformation($"Querrys the database for all items within {city}");
             return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await Get.MapData(item => item.City == city)));
         }
 
@@ -65,6 +75,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("State/{state}")]
         public async Task<ActionResult<MapData>> GetActionState(string state)
         {
+            log.LogInformation($"Querrys the database for all items within {state}");
             return await TryTask<MapData>.Run(async () => Ok(await Get.MapData(item => item.State == state)));
         }
 

@@ -1,10 +1,7 @@
 ﻿using CoOp19.Dtb;
 using CoOp19.Dtb.Entities;
 using CoOp19.Lib.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace CoOp19.Lib

@@ -2,11 +2,10 @@ using CoOp19.Dtb;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System.Web.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace CoOp19.App
 {
@@ -28,17 +27,19 @@ namespace CoOp19.App
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                 builder =>
                                 {
-                                      builder.WithOrigins("https://co-op19.azurewebsites.net",
-                                                      "https://co-op19.azurewebsites.net/register",
-                                                      "http://localhost:4200/register",
-                                                      "http://localhost:4200"
-                                                      )
-                                                      .AllowAnyHeader()
-                                                      .AllowAnyMethod();
-                                  });
+                                    builder.WithOrigins("https://co-op19.azurewebsites.net",
+                                                    "https://co-op19.azurewebsites.net/register",
+                                                    "http://localhost:4200/register",
+                                                    "http://localhost:4200"
+                                                    )
+                                                    .AllowAnyHeader()
+                                                    .AllowAnyMethod();
+                                });
             });
 
             StringData.ConnectionString = Configuration.GetConnectionString("Access");
+
+            services.AddLogging();
 
             services.AddDbContext<DB19Context>(options =>
                options.UseSqlServer(Configuration.GetConnectionString("DB19Context")));

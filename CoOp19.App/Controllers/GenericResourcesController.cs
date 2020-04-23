@@ -1,8 +1,7 @@
-using CoOp19.Dtb;
-using CoOp19.Dtb.Entities;
 using CoOp19.Lib;
 using CoOp19.Lib.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -12,6 +11,13 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class GenericResourcesController : ControllerBase
     {
+        private ILogger log;
+
+        public GenericResourcesController(ILogger<GenericResourcesController> logger)
+        {
+            log = logger;
+        }
+        
         /// <summary>
         /// retrieves a list of all generic
         /// </summary>
@@ -19,6 +25,7 @@ namespace CoOp19.App.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<GenericViewResource>>> GetAction()
         {
+            log.LogInformation($"Querrying the database for all generic data");
             return await TryTask<IEnumerable<GenericViewResource>>.Run(async () => Ok(await Get.Generics()));
         }
         /// <summary>
@@ -29,6 +36,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("{ID}")]
         public async Task<ActionResult<GenericViewResource>> GetAction(int id)
         {
+            log.LogInformation($"Querrying the database for generic resource with id:{id}");
             return await TryTask<GenericViewResource>.Run(async () => Ok(await Get.Generic(id)));
         }
         /// <summary>
@@ -41,6 +49,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("{North}/{West}/{Radius}")]
         public async Task<ActionResult<IEnumerable<GenericViewResource>>> GetAction(decimal North, decimal West, decimal Radius)
         {
+            log.LogInformation($"Querrys the database for all generic data within {Radius} miles of N{North}, W{West}");
             return await TryTask<IEnumerable<GenericViewResource>>.Run(async () => Ok(await Get.Generics(North, West, Radius)));
         }
         /// <summary>
@@ -51,6 +60,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("City/{city}")]
         public async Task<ActionResult<IEnumerable<GenericViewResource>>> GetActionCity(string city)
         {
+            log.LogInformation($"Querrying the database for all generic recources in {city}");
             return await TryTask<IEnumerable<GenericViewResource>>.Run(async () => Ok(await Get.Generics(item => item.City == city)));
         }
         /// <summary>
@@ -61,6 +71,7 @@ namespace CoOp19.App.Controllers
         [HttpGet("State/{state}")]
         public async Task<ActionResult<IEnumerable<GenericViewResource>>> GetActionState(string state)
         {
+            log.LogInformation($"Querrying the database for all generic recources in {state}");
             return await TryTask<IEnumerable<GenericViewResource>>.Run(async () => Ok(await Get.Generics(item => item.State == state)));
         }
         /// <summary>
@@ -73,6 +84,7 @@ namespace CoOp19.App.Controllers
         [ProducesResponseType(400)]
         public async Task<ActionResult<GenericViewResource>> PostAction([FromBody] GenericViewResource gen)
         {
+            log.LogInformation($"Adding {gen.Name} to the database");
             return await TryTask<GenericViewResource>.Run(async () =>
             {
                 await Post.AddGeneric(gen);

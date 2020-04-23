@@ -217,10 +217,10 @@ namespace CoOp19.Lib
                    where check(item)
                    select item;
         }
-        
+
         private static bool InRadius(decimal xn, decimal yn, decimal xw, decimal yw, decimal r)
         {
-            var Radius = Math.Pow((double)r/69, 2);
+            var Radius = Math.Pow((double)r / 69, 2);
             var North = Math.Pow((double)(xn - yn), 2);
             var West = Math.Pow((double)(xw - yw), 2);
             return North + West <= Radius;

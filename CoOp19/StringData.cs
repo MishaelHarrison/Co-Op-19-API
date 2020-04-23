@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace CoOp19.Dtb
+﻿namespace CoOp19.Dtb
 {
-    public class StringData
+    public static class StringData
     {
         /// <summary>
         /// a string holding the connection string

@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using System;
-using System.Net;
 using System.Threading.Tasks;
-using System.Web.Mvc;
 
 namespace CoOp19.App
 {
