@@ -72,6 +72,6 @@ namespace CoOp19.App.Controllers
         {
             return Ok(await Get.HealthResources(item => item.State == state));
         }
-
+       
     }
 }
