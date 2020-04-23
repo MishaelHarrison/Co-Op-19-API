@@ -10,14 +10,27 @@ jobs:
 
   steps:
   
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'https://sonarcloud.io/project/configuration?id=MishaelHarrison_Co-Op-19-API'
+      organization: 'mishaelharrison'
+      scannerMode: 'MSBuild'
+      projectKey: 'sonar.productkey'
+    displayName: "compile cloud analisis"
+  
   - task: DotNetCoreCLI@2
     inputs:
       command: 'build'
+    displayName: "dotnet build"
 
   - task: DotNetCoreCLI@2
     inputs:
       command: 'publish'
       publishWebProjects: true
+    displayName: "compile a publish"
+
+  - task: SonarCloudAnalyze@1
+    displayName: "publish cloud analisis"
 
   - task: AzureRmWebAppDeployment@4
     inputs:
@@ -26,3 +39,4 @@ jobs:
       appType: 'webApp'
       WebAppName: 'DB-19'
       packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    displayName: "publish app to azure webapps"
