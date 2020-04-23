@@ -9,6 +9,13 @@ jobs:
 - job: build
 
   steps:
+
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'https://sonarcloud.io/project/configuration?id=MishaelHarrison_Co-Op-19-API'
+      organization: 'mishaelharrison'
+      scannerMode: 'MSBuild'
+      projectKey: 'sonar.productkey'
   
   - task: DotNetCoreCLI@2
     inputs:
@@ -18,6 +25,8 @@ jobs:
     inputs:
       command: 'publish'
       publishWebProjects: true
+
+  - task: SonarCloudAnalyze@1
 
   - task: AzureRmWebAppDeployment@4
     inputs:
