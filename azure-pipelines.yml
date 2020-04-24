@@ -17,6 +17,15 @@ jobs:
       scannerMode: 'MSBuild'
       projectKey: 'sonar.productkey'
     displayName: "compile cloud analisis"
+
+  - task: VSTest@2
+    inputs:
+      testSelector: 'testAssemblies'
+      testAssemblyVer2: |
+        **\*test*.dll
+        !**\*TestAdapter.dll
+        !**\obj\**
+      searchFolder: '$(System.DefaultWorkingDirectory)'
   
   - task: DotNetCoreCLI@2
     inputs:
@@ -30,7 +39,6 @@ jobs:
     displayName: "compile a publish"
 
   - task: SonarCloudAnalyze@1
-    displayName: "publish cloud analisis"
 
   - task: AzureRmWebAppDeployment@4
     inputs:
