@@ -4,7 +4,13 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
+variables:
+    sdkVersion: 3.1.x
+    solutionPath: CoOp19
+    buildConfiguration: Release
+
 jobs:
+
 
 
 
