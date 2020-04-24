@@ -18,6 +18,10 @@ jobs:
       projectKey: 'sonar.productkey'
     displayName: "compile cloud analisis"
 
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'test'
+
   - task: VSTest@2
     inputs:
       testSelector: 'testAssemblies'
