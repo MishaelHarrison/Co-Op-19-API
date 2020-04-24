@@ -62,4 +62,4 @@ jobs:
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'XUnit'
-        testResultsFiles: '**/TEST-*.xml'
+        testResultsFiles: '$(Agent.TempDirectory)/TEST*.xml'
