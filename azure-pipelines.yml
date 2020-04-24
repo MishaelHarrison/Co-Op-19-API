@@ -18,10 +18,37 @@ jobs:
       projectKey: 'sonar.productkey'
     displayName: "compile cloud analisis"
 
-  - task: DotNetCoreCLI@2
+
+  - script: dotnet test
+      --configuration $(buildConfiguration)
+      --logger trx
+      --no-build
+      --results-directory $(Common.TestResultsDirectory)
+      --settings coverlet.runsettings
+    workingDirectory: $(solutionPath)
+    continueOnError: true
+    displayName: dotnet test
+
+  - task: SonarCloudAnalyze@1
+    displayName: sonarcloud analysis run
+
+  - task: PublishTestResults@2
+    condition: succeededOrFailed()
     inputs:
-      command: 'test'
-      arguments: '--results-directory \a\_temp'
+      testRunner: VSTest
+      testResultsFiles: $(Common.TestResultsDirectory)/*.trx
+    displayName: test results build publish
+
+  - task: PublishCodeCoverageResults@1
+    condition: succeededOrFailed()
+    inputs:
+      codeCoverageTool: Cobertura
+      summaryFileLocation: $(Common.TestResultsDirectory)/*/coverage.cobertura.xml
+    displayName: code coverage build publish
+
+  - task: SonarCloudPublish@1
+    condition: succeededOrFailed()
+    displayName: sonarcloud results build publish
   
   - task: DotNetCoreCLI@2
     inputs:
@@ -45,17 +72,3 @@ jobs:
       WebAppName: 'DB-19'
       packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
     displayName: "publish app to azure webapps"
-
-- job: test
-
-  steps:
-  
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'test'
-
-    - task: PublishTestResults@2
-      inputs:
-        testResultsFormat: 'XUnit'
-        testResultsFiles: '**/TEST*.xml'
-        searchFolder: '$(Agent.TempDirectory)'
