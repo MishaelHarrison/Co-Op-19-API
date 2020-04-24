@@ -44,22 +44,25 @@ jobs:
 - job: test
 
   steps:
+  
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'https://sonarcloud.io/project/configuration?id=MishaelHarrison_Co-Op-19-API'
+        organization: 'mishaelharrison'
+        scannerMode: 'MSBuild'
+        projectKey: 'sonar.productkey'
+      displayName: "compile cloud analisis"
     
     
     - task: DotNetCoreCLI@2
       inputs:
         command: 'test'
 
-    - task: VSTest@2
+    - task: SonarCloudPublish@1
       inputs:
-        testSelector: 'testAssemblies'
-        testAssemblyVer2: |
-          **\*test*.dll
-          !**\*TestAdapter.dll
-          !**\obj\**
-        searchFolder: '$(System.DefaultWorkingDirectory)'
+        pollingTimeoutSec: '300'
 
     - task: PublishTestResults@2
       inputs:
         testResultsFormat: 'XUnit'
-        testResultsFiles: '$(Agent.TempDirectory)/TEST*.xml'
+        testResultsFiles: '**/TEST*.xml'
