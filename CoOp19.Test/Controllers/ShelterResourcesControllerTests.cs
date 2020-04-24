@@ -62,21 +62,5 @@ namespace CoOp19.Test.Controllers
 
             get.Verify(x => x.Shelters(gpsn, gpsw, radius), Times.Exactly(1));
         }
-
-        [Fact()]
-        public async void PostTest()
-        {
-            var post = NewPost;
-
-            var shelter = new ShelterViewResource();
-
-            post.Setup(x => x.AddShelterResource(shelter)).Returns(Task.Delay(10));
-
-            var ret = await subject.PostAsync(post.Object, shelter);
-
-            Assert.Equal(ret.Value, shelter);
-
-            post.Verify(x => x.AddShelterResource(shelter), Times.Exactly(1));
-        }
     }
 }

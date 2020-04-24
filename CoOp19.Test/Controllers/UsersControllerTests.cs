@@ -62,22 +62,5 @@ namespace CoOp19.App.Controllers.Tests
 
             get.Verify(x => x.Users(gpsn, gpsw, radius), Times.Exactly(1));
         }
-   
-
-        [Fact()]
-        public async void PostTest()
-        {
-            var post = NewPost;
-
-            var user = new UsersView();
-
-            post.Setup(x => x.AddUser(user)).Returns(Task.Delay(10));
-
-            var ret = await subject.PostAsync(post.Object, user);
-
-            Assert.Equal(ret.Value, user);
-
-            post.Verify(x => x.AddUser(user), Times.Exactly(1));
-        }
     }
 }

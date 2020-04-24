@@ -46,21 +46,5 @@ namespace CoOp19.Test.Controllers
 
             get.Verify(x => x.MapData(testInt), Times.Exactly(1));
         }
-
-        [Fact()]
-        public async void GetGPSTest()
-        {
-            var get = NewGet;
-
-            decimal gpsn = 1;
-            decimal gpsw = 2;
-            decimal radius = 3;
-
-            get.Setup(x => x.MapData(gpsn, gpsw, radius));
-
-            await subject.GetAction(get.Object, gpsn, gpsw, radius);
-
-            get.Verify(x => x.MapData(gpsn, gpsw, radius), Times.Exactly(1));
-        }
     }
 }

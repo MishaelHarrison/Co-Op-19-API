@@ -62,21 +62,5 @@ namespace CoOp19.Test.Controllers
 
             get.Verify(x => x.Generics(gpsn, gpsw, radius), Times.Exactly(1));
         }
-
-        [Fact()]
-        public async void PostTest()
-        {
-            var post = NewPost;
-
-            var generic = new GenericViewResource();
-
-            post.Setup(x => x.AddGeneric(generic)).Returns(Task.Delay(10));
-
-            var ret = await subject.PostAction(post.Object, generic);
-
-            Assert.Equal(ret.Value, generic);
-
-            post.Verify(x => x.AddGeneric(generic), Times.Exactly(1));
-        }
     }
 }

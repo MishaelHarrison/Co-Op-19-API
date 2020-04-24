@@ -62,21 +62,5 @@ namespace CoOp19.Test.Controllers
 
             get.Verify(x => x.HealthServices(gpsn, gpsw, radius), Times.Exactly(1));
         }
-
-        [Fact()]
-        public async void PostTest()
-        {
-            var post = NewPost;
-
-            var service = new HealthViewResourceService();
-
-            post.Setup(x => x.AddHealthResourceService(service)).Returns(Task.Delay(10));
-
-            var ret = await subject.PostAction(post.Object, service);
-
-            Assert.Equal(ret.Value, service);
-
-            post.Verify(x => x.AddHealthResourceService(service), Times.Exactly(1));
-        }
     }
 }
