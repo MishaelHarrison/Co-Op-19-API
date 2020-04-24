@@ -69,9 +69,9 @@ jobs:
         version: $(sdkVersion)
       displayName: dotnet $(sdkVersion)
 
-    - script: dotnet build
-      workingDirectory: $(solutionPath)
-      displayName: dotnet build
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'build'
 
     - script: dotnet test
         --configuration $(buildConfiguration)
