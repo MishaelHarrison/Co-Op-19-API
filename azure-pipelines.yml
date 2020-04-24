@@ -24,6 +24,7 @@ jobs:
 
   - task: VSTest@2
     inputs:
+      codeCoverageEnabled: true
       testSelector: 'testAssemblies'
       testAssemblyVer2: |
         **\*test*.dll
