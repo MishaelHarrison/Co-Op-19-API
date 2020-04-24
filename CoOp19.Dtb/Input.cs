@@ -8,9 +8,9 @@ namespace CoOp19.Dtb
     {
         private DB19Context context;
 
-        public Input(IDB19Context cont)
+        public Input(DB19Context cont)
         {
-            context = (DB19Context)cont;
+            context = cont;
         }
 
         /// <summary>

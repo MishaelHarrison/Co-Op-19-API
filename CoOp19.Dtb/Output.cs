@@ -9,11 +9,11 @@ namespace CoOp19.Dtb
 {
     public class Output : IOutput
     {
-        private DB19Context context;
+        private readonly DB19Context context;
 
-        public Output(IDB19Context cont)
+        public Output(DB19Context cont)
         {
-            context = (DB19Context)cont;
+            context = cont;
         }
 
         public async Task<IEnumerable<T>> Get<T>() where T : class

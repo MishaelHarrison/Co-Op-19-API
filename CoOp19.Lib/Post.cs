@@ -8,7 +8,7 @@ namespace CoOp19.Lib
 {
     public class Post : IPost
     {
-        private IInput input;
+        private readonly IInput input;
 
         public Post(IInput inp)
         {

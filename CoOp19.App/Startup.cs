@@ -2,6 +2,7 @@ using CoOp19.Dtb;
 using CoOp19.Lib;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -39,12 +40,8 @@ namespace CoOp19.App
 
             services.AddLogging();
 
-            services.AddTransient<IOutput, Output>();
-            services.AddTransient<IInput, Input>();
-            services.AddTransient<IGet, Get>();
-            services.AddTransient<IPost, Post>();
-
-            services.AddTransient<IDB19Context>(s => new DB19Context(Configuration.GetConnectionString("Access")));
+            services.AddTransient<IGet>(s => new Get(new Output(new DB19Context(Configuration.GetConnectionString("Access")))));
+            services.AddTransient<IPost>(s => new Post(new Input(new DB19Context(Configuration.GetConnectionString("Access")))));
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
