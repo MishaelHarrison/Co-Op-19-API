@@ -6,8 +6,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CoOp19.Dtb\CoOp19.Dtb.csproj" />
     <ProjectReference Include="..\CoOp19.Lib\CoOp19.Lib.csproj" />
-    <ProjectReference Include="..\CoOp19\CoOp19.Dtb.csproj" />
   </ItemGroup>
 
 
