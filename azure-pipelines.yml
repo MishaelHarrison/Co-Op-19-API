@@ -73,14 +73,9 @@ jobs:
       inputs:
         command: 'build'
 
-    - script: dotnet test
-        --configuration $(buildConfiguration)
-        --logger trx
-        --no-build
-        --results-directory $(Common.TestResultsDirectory)
-        --settings coverlet.runsettings
-      continueOnError: true
-      displayName: dotnet test
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'test'
 
     - task: SonarCloudAnalyze@1
       displayName: sonarcloud analysis run
