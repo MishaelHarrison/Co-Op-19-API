@@ -12,7 +12,7 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        private ILogger log;
+        private readonly ILogger log;
 
         public UsersController(ILogger<UsersController> logger)
         {

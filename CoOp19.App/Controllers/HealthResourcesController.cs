@@ -11,7 +11,7 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class HealthResourcesController : ControllerBase
     {
-        private ILogger log;
+        private readonly ILogger log;
 
         public HealthResourcesController(ILogger<HealthResourcesController> logger)
         {

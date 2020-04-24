@@ -11,7 +11,7 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class ShelterResourcesController : ControllerBase
     {
-        private ILogger log;
+        private readonly ILogger log;
 
         public ShelterResourcesController(ILogger<ShelterResourcesController> logger)
         {

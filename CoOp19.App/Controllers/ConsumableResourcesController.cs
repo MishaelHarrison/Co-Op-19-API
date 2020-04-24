@@ -11,7 +11,7 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class ConsumableResourcesController : ControllerBase
     {
-        private ILogger log;
+        private readonly ILogger log;
 
         public ConsumableResourcesController(ILogger<ConsumableResourcesController> logger)
         {
