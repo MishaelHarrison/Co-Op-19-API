@@ -11,7 +11,7 @@ namespace CoOp19.App.Controllers
     [ApiController]
     public class GenericResourcesController : ControllerBase
     {
-        private ILogger log;
+        private readonly ILogger log;
 
         public GenericResourcesController(ILogger<GenericResourcesController> logger)
         {

@@ -23,7 +23,7 @@ namespace CoOp19.App.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetAction([FromServices] IGet get)
+        public async Task<ActionResult<IEnumerable<ConsumableViewResource>>> GetActionCity([FromServices] IGet get)
         {
             log.LogInformation("Querrying all consumable resources");
             return await TryTask<IEnumerable<ConsumableViewResource>>.Run(async () => Ok(await get.Consumables()));
