@@ -31,7 +31,7 @@ namespace CoOp19.App.Controllers.Tests
             var get = NewGet;
             get.Setup(x => x.Consumables());
 
-            await subject.GetActionCity(get.Object);
+            await subject.GetAction(get.Object);
 
             get.Verify(x => x.Consumables(), Times.Exactly(1));
         }
@@ -59,7 +59,7 @@ namespace CoOp19.App.Controllers.Tests
 
             get.Setup(x => x.Consumables(gpsn, gpsw, radius));
 
-            await subject.GetActionCity(get.Object);
+            await subject.GetAction(get.Object, gpsn, gpsw, radius);
 
             get.Verify(x => x.Consumables(gpsn, gpsw, radius), Times.Exactly(1));
         }
@@ -68,11 +68,16 @@ namespace CoOp19.App.Controllers.Tests
         public async void GetCityTest()
         {
             var get = NewGet;
-            get.Setup(x => x.Consumables(x => true));
 
-            await subject.GetActionCity(get.Object);
+            string city = "cool";
 
-            get.Verify(x => x.Consumables(x => true), Times.Exactly(1));
+            Func<ConsumableViewResource, bool> check = item => item.City == city;
+
+            get.Setup(x => x.Consumables(check));
+
+            await subject.GetActionCity(get.Object, city);
+
+            get.Verify(x => x.Consumables(check), Times.Exactly(1));
         }
 
         [Fact()]
@@ -81,7 +86,7 @@ namespace CoOp19.App.Controllers.Tests
             var get = NewGet;
             get.Setup(x => x.Consumables(x => true));
 
-            await subject.GetActionCity(get.Object);
+            await subject.GetActionState(get.Object, "cool");
 
             get.Verify(x => x.Consumables(x => true), Times.Exactly(1));
         }
