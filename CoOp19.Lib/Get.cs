@@ -11,7 +11,7 @@ namespace CoOp19.Lib
 {
     public class Get : IGet
     {
-        public IOutput output;
+        private readonly IOutput output;
 
         public Get(IOutput output)
         {
