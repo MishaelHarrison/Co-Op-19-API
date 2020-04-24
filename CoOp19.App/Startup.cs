@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.OpenApi.Models;
 
 namespace CoOp19.App
 {
@@ -44,6 +45,10 @@ namespace CoOp19.App
             services.AddTransient <IInput, Input> (); 
             services.AddTransient <IGet, Get> ();
             services.AddTransient <IPost, Post> ();
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+            });
 
             services.AddTransient <IDB19Context> (s => new DB19Context(Configuration.GetConnectionString("Access")));
 
@@ -64,9 +69,20 @@ namespace CoOp19.App
 
             app.UseHttpsRedirection();
 
+            app.UseSwagger();
+
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.RoutePrefix = string.Empty;
+            });
+
             app.UseRouting();
 
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
