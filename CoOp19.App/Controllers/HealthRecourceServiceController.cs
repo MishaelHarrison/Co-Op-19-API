@@ -23,10 +23,10 @@ namespace CoOp19.App.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> GetAction()
+        public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> GetAction([FromServices] IGet get)
         {
             log.LogInformation($"Querring the database for all Health services");
-            return await TryTask<IEnumerable<HealthViewResourceService>>.Run(async () => Ok(await Get.HealthServices()));
+            return await TryTask<IEnumerable<HealthViewResourceService>>.Run(async () => Ok(await get.HealthServices()));
         }
         /// <summary>
         /// gets a single healthservice resource by "id"
@@ -34,10 +34,10 @@ namespace CoOp19.App.Controllers
         /// <param name="id"></param>
         /// <returns>a single healthservice resource</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<HealthViewResourceService>> GetAction(int id)
+        public async Task<ActionResult<HealthViewResourceService>> GetAction([FromServices] IGet get, int id)
         {
             log.LogInformation($"Querrying the database for a health resource with id:{id}");
-            return await TryTask<HealthViewResourceService>.Run(async () => await Get.HealthService(id));
+            return await TryTask<HealthViewResourceService>.Run(async () => await get.HealthService(id));
         }
         /// <summary>
         /// retrives all health resources within a specified radius
@@ -47,10 +47,10 @@ namespace CoOp19.App.Controllers
         /// <param name="Radius"></param>
         /// <returns></returns>
         [HttpGet("{North}/{West}/{Radius}")]
-        public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> GetAction(decimal North, decimal West, decimal Radius)
+        public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> GetAction([FromServices] IGet get, decimal North, decimal West, decimal Radius)
         {
             log.LogInformation($"Querrying the database for all health services within {Radius} miles of N{North}, W{West}");
-            return await TryTask<IEnumerable<HealthViewResourceService>>.Run(async () => Ok(await Get.HealthServices(North, West, Radius)));
+            return await TryTask<IEnumerable<HealthViewResourceService>>.Run(async () => Ok(await get.HealthServices(North, West, Radius)));
         }
         /// <summary>
         /// retrieves all health resources within a given city
@@ -58,10 +58,10 @@ namespace CoOp19.App.Controllers
         /// <param name="city"></param>
         /// <returns></returns>
         [HttpGet("City/{city}")]
-        public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> GetActionCity(string city)
+        public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> GetActionCity([FromServices] IGet get, string city)
         {
             log.LogInformation($"Querrys the database for all health resources in {city}");
-            return await TryTask<IEnumerable<HealthViewResourceService>>.Run(async () => Ok(await Get.HealthServices(item => item.City == city)));
+            return await TryTask<IEnumerable<HealthViewResourceService>>.Run(async () => Ok(await get.HealthServices(item => item.City == city)));
         }
         /// <summary>
         /// retrieves all health resources within a given state
@@ -69,10 +69,10 @@ namespace CoOp19.App.Controllers
         /// <param name="state"></param>
         /// <returns></returns>
         [HttpGet("State/{state}")]
-        public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> GetActionState(string state)
+        public async Task<ActionResult<IEnumerable<HealthViewResourceService>>> GetActionState([FromServices] IGet get, string state)
         {
             log.LogInformation($"Querrys the database for all health resources in {state}");
-            return await TryTask<IEnumerable<HealthViewResourceService>>.Run(async () => Ok(await Get.HealthServices(item => item.State == state)));
+            return await TryTask<IEnumerable<HealthViewResourceService>>.Run(async () => Ok(await get.HealthServices(item => item.State == state)));
         }
         /// <summary>
         /// post a health service to the database
@@ -82,12 +82,12 @@ namespace CoOp19.App.Controllers
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(HealthViewResourceService))]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<HealthViewResourceService>> PostAction([FromBody] HealthViewResourceService serv)
+        public async Task<ActionResult<HealthViewResourceService>> PostAction([FromServices] IPost post, [FromBody] HealthViewResourceService serv)
         {
             log.LogInformation($"adding {serv.ServiceName} to the database");
             return await TryTask<HealthViewResourceService>.Run(async () =>
             {
-                await Post.AddHealthResourceService(serv);
+                await post.AddHealthResourceService(serv);
                 return Ok(serv);
             });
         }

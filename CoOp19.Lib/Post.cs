@@ -6,17 +6,23 @@ using System.Threading.Tasks;
 
 namespace CoOp19.Lib
 {
-    public class Post
+    public class Post : IPost
     {
+        private IInput input;
+
+        public Post(IInput inp)
+        {
+            input = inp;
+        }
         /// <summary>
         /// adds a map data resource to the database
         /// </summary>
         /// <param name="input">input</param>
         /// <returns>updated item after adding</returns>
-        public static async Task AddMapData(ViewMapData input)
+        public async Task AddMapData(ViewMapData item)
         {
-            var item = await Input.Add(input.ToData());
-            input.ID = item.Id;
+            var newItem = await input.Add(item.ToData());
+            item.ID = newItem.Id;
         }
 
         /// <summary>
@@ -24,10 +30,9 @@ namespace CoOp19.Lib
         /// </summary>
         /// <param name="input">input</param>
         /// <returns>updated item after adding</returns>
-        public static async Task AddUser(UsersView input)
+        public async Task AddUser(UsersView item)
         {
-            var item = await Input.Add(input.ToData());
-            input.Id = item.Id;
+            item.Id = (await input.Add(item.ToData())).Id;
         }
 
         /// <summary>
@@ -35,10 +40,9 @@ namespace CoOp19.Lib
         /// </summary>
         /// <param name="input">input</param>
         /// <returns>updated item after adding</returns>
-        public static async Task AddShelterResource(ShelterViewResource input)
+        public async Task AddShelterResource(ShelterViewResource item)
         {
-            var item = await Input.Add(input.ToData());
-            input.Id = item.Id;
+            item.Id = (await input.Add(item.ToData())).Id;
         }
 
         /// <summary>
@@ -46,10 +50,9 @@ namespace CoOp19.Lib
         /// </summary>
         /// <param name="input">input</param>
         /// <returns>updated item after adding</returns>
-        public static async Task AddHealthResourceService(HealthViewResourceService input)
+        public async Task AddHealthResourceService(HealthViewResourceService item)
         {
-            var item = await Input.Add(input.ToData());
-            input.Id = item.Id;
+            item.Id = (await input.Add(item.ToData())).Id;
         }
 
         /// <summary>
@@ -57,10 +60,9 @@ namespace CoOp19.Lib
         /// </summary>
         /// <param name="input">input</param>
         /// <returns>updated item after adding</returns>
-        public static async Task AddHealthResource(HealthViewResource input)
+        public async Task AddHealthResource(HealthViewResource item)
         {
-            var item = await Input.Add(input.ToData());
-            input.Id = item.Id;
+            item.Id = (await input.Add(item.ToData())).Id;
         }
 
         /// <summary>
@@ -68,10 +70,9 @@ namespace CoOp19.Lib
         /// </summary>
         /// <param name="input">input</param>
         /// <returns>updated item after adding</returns>
-        public static async Task AddGeneric(GenericViewResource input)
+        public async Task AddGeneric(GenericViewResource item)
         {
-            var item = await Input.Add(input.ToData());
-            input.Id = item.Id;
+            item.Id = (await input.Add(item.ToData())).Id;
         }
 
         /// <summary>
@@ -79,26 +80,9 @@ namespace CoOp19.Lib
         /// </summary>
         /// <param name="input">input</param>
         /// <returns>updated item after adding</returns>
-        public static async Task AddConsumable(ConsumableViewResource input)
+        public async Task AddConsumable(ConsumableViewResource item)
         {
-            var map = await Get.MapData(X => X.Gpsn == input.Gpsn && X.Gpsw == input.Gpsw);
-            ConsumableResource item;
-            if (map.Count() >= 1)
-            {
-                item = await Input.Add(input.ToData(map.ToList()[0].ToData()));
-            }
-            else
-            {
-                item = await Input.Add(input.ToData(new MapData()
-                {
-                    Gpsn = input.Gpsn,
-                    Gpsw = input.Gpsw,
-                    City = input.City,
-                    State = input.State,
-                    Address = input.Address
-                }));
-            }
-            input.Id = item.Id;
+            item.Id = (await input.Add(item.ToData())).Id;
         }
     }
 }

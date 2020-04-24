@@ -23,10 +23,10 @@ namespace CoOp19.App.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionAsync()
+        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionAsync([FromServices] IGet get)
         {
             log.LogInformation("Querrys the database for all shelther resources");
-            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters()));
+            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await get.Shelters()));
         }
 
         /// <summary>
@@ -35,10 +35,10 @@ namespace CoOp19.App.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{ID}")]
-        public async Task<ActionResult<ShelterViewResource>> GetOneActionAsync(int id)
+        public async Task<ActionResult<ShelterViewResource>> GetOneActionAsync([FromServices] IGet get, int id)
         {
             log.LogInformation($"Querrys the database a shelter resource with id:{id}");
-            return await TryTask<ShelterViewResource>.Run(async () => await Get.Shelter(id));
+            return await TryTask<ShelterViewResource>.Run(async () => await get.Shelter(id));
         }
 
         /// <summary>
@@ -49,10 +49,10 @@ namespace CoOp19.App.Controllers
         /// <param name="Radius">Radius</param>
         /// <returns></returns>
         [HttpGet("{North}/{West}/{Radius}")]
-        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetAction(decimal North, decimal West, decimal Radius)
+        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetAction([FromServices] IGet get, decimal North, decimal West, decimal Radius)
         {
             log.LogInformation($"Querrying the database for all shelter resource within {Radius} miles of N{North}, W{West}");
-            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters(North, West, Radius)));
+            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await get.Shelters(North, West, Radius)));
         }
 
         /// <summary>
@@ -61,10 +61,10 @@ namespace CoOp19.App.Controllers
         /// <param name="city"></param>
         /// <returns></returns>
         [HttpGet("City/{city}")]
-        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionCity(string city)
+        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionCity([FromServices] IGet get, string city)
         {
             log.LogInformation($"Querrys the database for all shelter resources within {city}");
-            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters(item => item.City == city)));
+            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await get.Shelters(item => item.City == city)));
         }
 
         /// <summary>
@@ -73,10 +73,10 @@ namespace CoOp19.App.Controllers
         /// <param name="state"></param>
         /// <returns></returns>
         [HttpGet("State/{state}")]
-        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionState(string state)
+        public async Task<ActionResult<IEnumerable<ShelterViewResource>>> GetActionState([FromServices] IGet get, string state)
         {
             log.LogInformation($"Querrys the database for all shelter resources within {state}");
-            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await Get.Shelters(item => item.State == state)));
+            return await TryTask<IEnumerable<ShelterViewResource>>.Run(async () => Ok(await get.Shelters(item => item.State == state)));
         }
 
         /// <summary>
@@ -87,12 +87,12 @@ namespace CoOp19.App.Controllers
         [HttpPost]
         [ProducesResponseType(201, Type = typeof(ShelterViewResource))]
         [ProducesResponseType(400)]
-        public async Task<ActionResult<ShelterViewResource>> PostAsync([FromBody] ShelterViewResource shelt)
+        public async Task<ActionResult<ShelterViewResource>> PostAsync([FromServices] IPost post, [FromBody] ShelterViewResource shelt)
         {
             log.LogInformation($"Adding {shelt.Name} to database");
             return await TryTask<ShelterViewResource>.Run(async () =>
             {
-                await Post.AddShelterResource(shelt);
+                await post.AddShelterResource(shelt);
                 return Ok(shelt);
             });
         }

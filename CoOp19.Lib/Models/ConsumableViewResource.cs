@@ -20,8 +20,16 @@ namespace CoOp19.Lib.Models
             Description = gen.Description;
         }
 
-        public ConsumableResource ToData(MapData map)
+        public ConsumableResource ToData()
         {
+            var map = new MapData()
+            {
+                Gpsn = this.Gpsn,
+                Gpsw = this.Gpsw,
+                Address = this.Address,
+                City = this.City,
+                State = this.State
+            };
             var gen = new GenericResource()
             {
                 Name = this.Name,

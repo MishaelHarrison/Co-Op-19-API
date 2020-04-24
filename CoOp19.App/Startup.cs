@@ -1,4 +1,5 @@
 using CoOp19.Dtb;
+using CoOp19.Lib;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -37,12 +38,15 @@ namespace CoOp19.App
                                 });
             });
 
-            StringData.ConnectionString = Configuration.GetConnectionString("Access");
-
             services.AddLogging();
 
-            services.AddDbContext<DB19Context>(options =>
-               options.UseSqlServer(Configuration.GetConnectionString("DB19Context")));
+            services.AddTransient <IOutput, Output> ();
+            services.AddTransient <IInput, Input> (); 
+            services.AddTransient <IGet, Get> ();
+            services.AddTransient <IPost, Post> ();
+
+            services.AddTransient <IDB19Context> (s => new DB19Context(Configuration.GetConnectionString("Access")));
+
             services.AddControllers();
         }
 

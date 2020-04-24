@@ -11,7 +11,7 @@ namespace CoOp19.App.Controllers
     [Route("[controller]")]
     public class MainController : ControllerBase
     {
-        private ILogger log;
+        private readonly ILogger log;
 
         public MainController(ILogger<MainController> logger)
         {
@@ -23,10 +23,10 @@ namespace CoOp19.App.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<MapData>>> GetAction()
+        public async Task<ActionResult<IEnumerable<MapData>>> GetAction([FromServices] IGet get)
         {
             log.LogInformation("Querrying the database for all maped items");
-            return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await Get.MapData()));
+            return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await get.MapData()));
         }
 
         /// <summary>
@@ -35,10 +35,10 @@ namespace CoOp19.App.Controllers
         /// <param name="id">id of item to search</param>
         /// <returns>single map data</returns>
         [HttpGet("{id}")]
-        public async Task<ActionResult<MapData>> GetAction(int id)
+        public async Task<ActionResult<MapData>> GetAction([FromServices] IGet get, int id)
         {
             log.LogInformation($"Querrying the database for item with id:{id}");
-            return await TryTask<MapData>.Run(async () => Ok(await Get.MapData(id)));
+            return await TryTask<MapData>.Run(async () => Ok(await get.MapData(id)));
         }
 
         /// <summary>
@@ -49,10 +49,10 @@ namespace CoOp19.App.Controllers
         /// <param name="Radius"></param>
         /// <returns></returns>
         [HttpGet("{North}/{West}/{Radius}")]
-        public async Task<ActionResult<IEnumerable<MapData>>> GetAction(decimal North, decimal West, decimal Radius)
+        public async Task<ActionResult<IEnumerable<MapData>>> GetAction([FromServices] IGet get, decimal North, decimal West, decimal Radius)
         {
             log.LogInformation($"Querrying the database for all items within {Radius} miles of N{North}, W{West}");
-            return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await Get.MapData(North, West, Radius)));
+            return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await get.MapData(North, West, Radius)));
         }
 
         /// <summary>
@@ -61,10 +61,10 @@ namespace CoOp19.App.Controllers
         /// <param name="city"></param>
         /// <returns></returns>
         [HttpGet("City/{city}")]
-        public async Task<ActionResult<IEnumerable<MapData>>> GetActionCity(string city)
+        public async Task<ActionResult<IEnumerable<MapData>>> GetActionCity([FromServices] IGet get, string city)
         {
             log.LogInformation($"Querrys the database for all items within {city}");
-            return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await Get.MapData(item => item.City == city)));
+            return await TryTask<IEnumerable<MapData>>.Run(async () => Ok(await get.MapData(item => item.City == city)));
         }
 
         /// <summary>
@@ -73,10 +73,10 @@ namespace CoOp19.App.Controllers
         /// <param name="state"></param>
         /// <returns></returns>
         [HttpGet("State/{state}")]
-        public async Task<ActionResult<MapData>> GetActionState(string state)
+        public async Task<ActionResult<MapData>> GetActionState([FromServices] IGet get, string state)
         {
             log.LogInformation($"Querrys the database for all items within {state}");
-            return await TryTask<MapData>.Run(async () => Ok(await Get.MapData(item => item.State == state)));
+            return await TryTask<MapData>.Run(async () => Ok(await get.MapData(item => item.State == state)));
         }
 
     }

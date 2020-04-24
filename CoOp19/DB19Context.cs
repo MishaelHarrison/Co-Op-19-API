@@ -3,10 +3,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CoOp19.Dtb
 {
-    public partial class DB19Context : DbContext
+    public partial class DB19Context : DbContext, IDB19Context
     {
-        public DB19Context()
+        private string access;
+
+        public DB19Context(string SQLAccess)
         {
+            access = SQLAccess;
         }
 
         public DB19Context(DbContextOptions<DB19Context> options)
@@ -26,7 +29,7 @@ namespace CoOp19.Dtb
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(StringData.ConnectionString);
+                optionsBuilder.UseSqlServer(access);
             }
         }
 

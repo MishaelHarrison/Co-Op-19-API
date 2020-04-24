@@ -7,153 +7,37 @@ using System.Threading.Tasks;
 
 namespace CoOp19.Dtb
 {
-    public class Output
+    public class Output : IOutput
     {
-        //output a list of all in a table/////////////////////////////////////////////////////////////////////////////////////
+        private DB19Context context;
 
-        static private async Task<IEnumerable<T>> Get<T>() where T : class
+        public Output(IDB19Context cont)
         {
-            using (var context = new DB19Context())
-            {
-                return await context.Set<T>().ToListAsync();
-            }
+            context = (DB19Context)cont;
         }
 
-        /// <summary>
-        /// retrieves a list of all consumables
-        /// </summary>
-        /// <returns></returns>
-        static public async Task<IEnumerable<ConsumableResource>> GetConsumables() =>
-            await Get<ConsumableResource>();
-        /// <summary>
-        /// retrieves a list of all health resources
-        /// </summary>
-        /// <returns></returns>
-        static public async Task<IEnumerable<HealthResource>> GetHealthResources() =>
-            await Get<HealthResource>();
-        /// <summary>
-        /// retrieves a list of all generics
-        /// </summary>
-        /// <returns></returns>
-        static public async Task<IEnumerable<GenericResource>> GetGenerics() =>
-            await Get<GenericResource>();
-        /// <summary>
-        /// retrieves a list of all health services
-        /// </summary>
-        /// <returns></returns>
-        static public async Task<IEnumerable<HealthResourceServices>> GetHealthServices() =>
-            await Get<HealthResourceServices>();
-        /// <summary>
-        /// retrieves a list of all map data
-        /// </summary>
-        /// <returns></returns>
-        static public async Task<IEnumerable<MapData>> GetMapData() =>
-            await Get<MapData>();
-        /// <summary>
-        /// retrieves a list of all shelters
-        /// </summary>
-        /// <returns></returns>
-        static public async Task<IEnumerable<ShelterResource>> GetShelters() =>
-            await Get<ShelterResource>();
-        /// <summary>
-        /// retrieves a list of all users
-        /// </summary>
-        /// <returns></returns>
-        static public async Task<IEnumerable<Users>> GetUsers() =>
-            await Get<Users>();
-
-        //Output all of a foreign key////////////////////////////////////////////////////////////////////////////////////////
-
-        static private async Task<List<T>> GetForeign<T>(Func<T, bool> Aplies) where T : class
+        public async Task<IEnumerable<T>> Get<T>() where T : class
         {
-            using (var context = new DB19Context())
-            {
-                return new List<T>(
-                     from item in await context.Set<T>().ToListAsync()
-                     where Aplies(item)
-                     select item);
-            }
+            return await context.Set<T>().ToListAsync();
         }
 
-        /// <summary>
-        /// retrieves a full querry of all consumable items on a related foreign key
-        /// </summary>
-        /// <param name="id">foreign key</param>
-        /// <returns></returns>
-        static public async Task<List<ConsumableResource>> GetRelatedConsumableResource(int id) =>
-            await GetForeign<ConsumableResource>(item => item.ResourceId == id);
-        /// <summary>
-        /// retrieves a full querry of all health service items on a related foreign key
-        /// </summary>
-        /// <param name="id">foreign key</param>
-        /// <returns></returns>
-        static public async Task<List<HealthResourceServices>> GetRelatedHealthResourceServices(int id) =>
-            await GetForeign<HealthResourceServices>(item => item.RecourceId == id);
-
-        //Output a single item/////////////////////////////////////////////////////////////////////////////////////////////////
-
-        static private async Task<T> Get<T>(int id) where T : class
+        public async Task<List<T>> Get<T>(Func<T, bool> Aplies) where T : class
         {
-            using (var context = new DB19Context())
-            {
-                var output = await context.Set<T>().FindAsync(id);
-                if (output == null)
-                {
-                    throw new Exception("Output",
-                        new Exception($"Requested item at Id:{id} In:{context.Set<T>().GetType()} does not exist"));
-                }
-                return await context.Set<T>().FindAsync(id);
-            }
+            return new List<T>(
+                from item in await context.Set<T>().ToListAsync()
+                where Aplies(item)
+                select item);
         }
 
-        /// <summary>
-        /// gets a consumable item
-        /// </summary>
-        /// <param name="id">id of item</param>
-        /// <returns></returns>
-        static public async Task<ConsumableResource> GetConsumableResource(int id) =>
-            await Get<ConsumableResource>(id);
-        /// <summary>
-        /// gets a generic item
-        /// </summary>
-        /// <param name="id">id of item</param>
-        /// <returns></returns>
-        static public async Task<GenericResource> GetGenericResource(int id) =>
-            await Get<GenericResource>(id);
-        /// <summary>
-        /// gets a health resource item
-        /// </summary>
-        /// <param name="id">id of item</param>
-        /// <returns></returns>
-        static public async Task<HealthResource> GetHealthResource(int id) =>
-            await Get<HealthResource>(id);
-        /// <summary>
-        /// gets a health service item
-        /// </summary>
-        /// <param name="id">id of item</param>
-        /// <returns></returns>
-        static public async Task<HealthResourceServices> GetHealthResourceService(int id) =>
-            await Get<HealthResourceServices>(id);
-        /// <summary>
-        /// gets a map data item
-        /// </summary>
-        /// <param name="id">id of item</param>
-        /// <returns></returns>
-        static public async Task<MapData> GetMapData(int id) =>
-            await Get<MapData>(id);
-        /// <summary>
-        /// gets a shelter resource item
-        /// </summary>
-        /// <param name="id">id of item</param>
-        /// <returns></returns>
-        static public async Task<ShelterResource> GetShelterResource(int id) =>
-            await Get<ShelterResource>(id);
-        /// <summary>
-        /// gets a user item
-        /// </summary>
-        /// <param name="id">id of item</param>
-        /// <returns></returns>
-        static public async Task<Users> GetUser(int id) =>
-            await Get<Users>(id);
+        public async Task<T> Get<T>(int id) where T : class
+        {
+            var output = await context.Set<T>().FindAsync(id);
+            if (output == null)
+            {
+                throw new Exception("Output",
+                    new Exception($"Requested item at Id:{id} In:{context.Set<T>().GetType()} does not exist"));
+            }
+            return await context.Set<T>().FindAsync(id);
+        }
     }
 }
