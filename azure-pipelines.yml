@@ -6,55 +6,95 @@ pool:
 
 jobs:
 
+
+
 - job: build
 
+  pool:
+     vmImage: 'ubuntu-latest'
+
+
   steps:
-  
-  - task: SonarCloudPrepare@1
-    inputs:
-      SonarCloud: 'https://sonarcloud.io/project/configuration?id=MishaelHarrison_Co-Op-19-API'
-      organization: 'mishaelharrison'
-      scannerMode: 'MSBuild'
-      projectKey: 'sonar.productkey'
-    displayName: "compile cloud analisis"
 
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'test'
+     - task: UseDotNet@2
+       inputs:
+         packageType: sdk
+         version: $(sdkVersion)
+       displayName: dotnet $(sdkVersion)
 
-  - task: VSTest@2
-    inputs:
-      codeCoverageEnabled: true
-      testSelector: 'testAssemblies'
-      testAssemblyVer2: |
-        **\*test*.dll
-        !**\*TestAdapter.dll
-        !**\obj\**
-      searchFolder: '$(System.DefaultWorkingDirectory)'
+     - task: DotNetCoreCLI@2
+       inputs:
+         command: publish
+         publishWebProjects: true
+         arguments:
+           --configuration $(buildConfiguration)
+           --output $(Build.ArtifactStagingDirectory)/app
+         modifyOutputPath: false
+         zipAfterPublish: false
+       displayName: dotnet publish
 
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: 'Cobertura'
-      summaryFileLocation: $(Common.TestResultsDirectory)/*/coverage.cobertura.xml
-  
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'build'
-    displayName: "dotnet build"
+     - publish: $(Build.ArtifactStagingDirectory)/app
+       artifact: app
+       displayName: artifact publish app
 
-  - task: DotNetCoreCLI@2
-    inputs:
-      command: 'publish'
-      publishWebProjects: true
-    displayName: "compile a publish"
 
-  - task: SonarCloudAnalyze@1
+- job: test
 
-  - task: AzureRmWebAppDeployment@4
-    inputs:
-      ConnectionType: 'AzureRM'
-      azureSubscription: 'Pay-As-You-Go Dev/Test(3c1324b2-479b-4445-ba09-0814a6b4f9bd)'
-      appType: 'webApp'
-      WebAppName: 'DB-19'
-      packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    displayName: "publish app to azure webapps"
+  pool:
+      vmImage: ubuntu-latest
+
+  steps:
+
+    - task: UseDotNet@2
+      inputs:
+        packageType: sdk
+        version: 2.1.x
+      displayName: dotnet 2.1.x
+    
+    - task: SonarCloudPrepare@1
+      inputs:
+        SonarCloud: 'https://sonarcloud.io/project/configuration?id=MishaelHarrison_Co-Op-19-API'
+        organization: 'mishaelharrison'
+        scannerMode: 'MSBuild'
+        projectKey: 'P3'
+    - task: UseDotNet@2
+      inputs:
+        packageType: sdk
+        version: $(sdkVersion)
+      displayName: dotnet $(sdkVersion)
+
+    - script: dotnet build
+        --configuration $(buildConfiguration)
+      workingDirectory: $(solutionPath)
+      displayName: dotnet build
+
+    - script: dotnet test
+        --configuration $(buildConfiguration)
+        --logger trx
+        --no-build
+        --results-directory $(Common.TestResultsDirectory)
+        --settings coverlet.runsettings
+      workingDirectory: $(solutionPath)
+      continueOnError: true
+      displayName: dotnet test
+
+    - task: SonarCloudAnalyze@1
+      displayName: sonarcloud analysis run
+
+    - task: PublishTestResults@2
+      condition: succeededOrFailed()
+      inputs:
+        testRunner: VSTest
+        testResultsFiles: $(Common.TestResultsDirectory)/*.trx
+      displayName: test results build publish
+
+    - task: PublishCodeCoverageResults@1
+      condition: succeededOrFailed()
+      inputs:
+        codeCoverageTool: Cobertura
+        summaryFileLocation: $(Common.TestResultsDirectory)/*/coverage.cobertura.xml
+      displayName: code coverage build publish
+
+    - task: SonarCloudPublish@1
+      condition: succeededOrFailed()
+      displayName: sonarcloud results build publish
