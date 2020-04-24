@@ -22,11 +22,6 @@ jobs:
     inputs:
       command: 'test'
 
-  - task: PublishCodeCoverageResults@1
-    inputs:
-      codeCoverageTool: 'Cobertura'
-      summaryFileLocation: $(Common.TestResultsDirectory)/*/coverage.cobertura.xml
-
   - task: VSTest@2
     inputs:
       testSelector: 'testAssemblies'
@@ -35,6 +30,11 @@ jobs:
         !**\*TestAdapter.dll
         !**\obj\**
       searchFolder: '$(System.DefaultWorkingDirectory)'
+
+  - task: PublishCodeCoverageResults@1
+    inputs:
+      codeCoverageTool: 'Cobertura'
+      summaryFileLocation: $(Common.TestResultsDirectory)/*/coverage.cobertura.xml
   
   - task: DotNetCoreCLI@2
     inputs:
