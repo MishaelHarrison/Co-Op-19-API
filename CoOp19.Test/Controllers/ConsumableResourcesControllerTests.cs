@@ -65,33 +65,6 @@ namespace CoOp19.App.Controllers.Tests
         }
 
         [Fact()]
-        public async void GetCityTest()
-        {
-            var get = NewGet;
-
-            string city = "cool";
-
-            Func<ConsumableViewResource, bool> check = item => item.City == city;
-
-            get.Setup(x => x.Consumables(check));
-
-            await subject.GetActionCity(get.Object, city);
-
-            get.Verify(x => x.Consumables(check), Times.Exactly(1));
-        }
-
-        [Fact()]
-        public async void GetStateTest()
-        {
-            var get = NewGet;
-            get.Setup(x => x.Consumables(x => true));
-
-            await subject.GetActionState(get.Object, "cool");
-
-            get.Verify(x => x.Consumables(x => true), Times.Exactly(1));
-        }
-
-        [Fact()]
         public async void PostTest()
         {
             var post = NewPost;

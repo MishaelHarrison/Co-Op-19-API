@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac.Extras.Moq" Version="5.0.1" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
     <PackageReference Include="Moq" Version="4.13.1" />
     <PackageReference Include="xunit" Version="2.4.0" />
@@ -17,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CoOp19.App\CoOp19.App.csproj" />
     <ProjectReference Include="..\CoOp19.Dtb\CoOp19.Dtb.csproj" />
+    <ProjectReference Include="..\CoOp19.Lib\CoOp19.Lib.csproj" />
   </ItemGroup>
 
 </Project>
