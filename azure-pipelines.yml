@@ -70,7 +70,6 @@ jobs:
       displayName: dotnet $(sdkVersion)
 
     - script: dotnet build
-        --configuration $(buildConfiguration)
       workingDirectory: $(solutionPath)
       displayName: dotnet build
 
