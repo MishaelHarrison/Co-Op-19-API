@@ -4,106 +4,41 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-variables:
-    sdkVersion: 3.1.x
-    solutionPath: CoOp19
-    buildConfiguration: Release
-
 jobs:
-
-
-
 
 - job: build
 
-  pool:
-     vmImage: 'ubuntu-latest'
-
-
   steps:
+  - task: SonarCloudPrepare@1
+    inputs:
+      SonarCloud: 'https://sonarcloud.io/project/configuration?id=MishaelHarrison_Co-Op-19-API'
+      organization: 'mishaelharrison'
+      scannerMode: 'MSBuild'
+      projectKey: 'P3'
 
-     - task: UseDotNet@2
-       inputs:
-         packageType: sdk
-         version: $(sdkVersion)
-       displayName: dotnet $(sdkVersion)
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'build'
 
-     - task: DotNetCoreCLI@2
-       inputs:
-         command: publish
-         publishWebProjects: true
-         arguments:
-           --configuration $(buildConfiguration)
-           --output $(Build.ArtifactStagingDirectory)/app
-         modifyOutputPath: false
-         zipAfterPublish: false
-       displayName: dotnet publish
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'test'
 
-     - publish: $(Build.ArtifactStagingDirectory)/app
-       artifact: app
-       displayName: artifact publish app
+  - task: SonarCloudAnalyze@1
 
+  - task: DotNetCoreCLI@2
+    inputs:
+      command: 'publish'
+      publishWebProjects: true
 
-- job: test
+  - task: AzureRmWebAppDeployment@4
+    inputs:
+      ConnectionType: 'AzureRM'
+      azureSubscription: 'Pay-As-You-Go Dev/Test(3c1324b2-479b-4445-ba09-0814a6b4f9bd)'
+      appType: 'webApp'
+      WebAppName: 'DB-19'
+      packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
 
-  pool:
-      vmImage: ubuntu-latest
-
-  steps:
-
-    - task: UseDotNet@2
-      inputs:
-        packageType: sdk
-        version: 2.1.x
-      displayName: dotnet 2.1.x
-    
-    - task: SonarCloudPrepare@1
-      inputs:
-        SonarCloud: 'https://sonarcloud.io/project/configuration?id=MishaelHarrison_Co-Op-19-API'
-        organization: 'mishaelharrison'
-        scannerMode: 'MSBuild'
-        projectKey: 'P3'
-    - task: UseDotNet@2
-      inputs:
-        packageType: sdk
-        version: $(sdkVersion)
-      displayName: dotnet $(sdkVersion)
-
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'build'
-
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'test'
-
-    - task: VSTest@2
-      inputs:
-        testSelector: 'testAssemblies'
-        codeCoverageEnabled: true
-        testAssemblyVer2: |
-          **\*test*.dll
-          !**\*TestAdapter.dll
-          !**\obj\**
-        searchFolder: '$(System.DefaultWorkingDirectory)'
-
-    - task: SonarCloudAnalyze@1
-      displayName: sonarcloud analysis run
-
-    - task: PublishTestResults@2
-      condition: succeededOrFailed()
-      inputs:
-        testRunner: VSTest
-        testResultsFiles: $(Common.TestResultsDirectory)/*.trx
-      displayName: test results build publish
-
-    - task: PublishCodeCoverageResults@1
-      condition: succeededOrFailed()
-      inputs:
-        codeCoverageTool: Cobertura
-        summaryFileLocation: $(Common.TestResultsDirectory)/*/coverage.cobertura.xml
-      displayName: code coverage build publish
-
-    - task: SonarCloudPublish@1
-      condition: succeededOrFailed()
-      displayName: sonarcloud results build publish
+  - task: SonarCloudPublish@1
+    inputs:
+      pollingTimeoutSec: '300'
