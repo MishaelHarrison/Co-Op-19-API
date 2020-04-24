@@ -77,6 +77,16 @@ jobs:
       inputs:
         command: 'test'
 
+    - task: VSTest@2
+      inputs:
+        testSelector: 'testAssemblies'
+        codeCoverageEnabled: true
+        testAssemblyVer2: |
+          **\*test*.dll
+          !**\*TestAdapter.dll
+          !**\obj\**
+        searchFolder: '$(System.DefaultWorkingDirectory)'
+
     - task: SonarCloudAnalyze@1
       displayName: sonarcloud analysis run
 
