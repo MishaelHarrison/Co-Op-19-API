@@ -40,3 +40,17 @@ jobs:
       WebAppName: 'DB-19'
       packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
     displayName: "publish app to azure webapps"
+
+- job: test
+
+  steps:
+    
+    
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'test'
+
+    - task: PublishTestResults@2
+      inputs:
+        testResultsFormat: 'XUnit'
+        testResultsFiles: '**/TEST-*.xml'
